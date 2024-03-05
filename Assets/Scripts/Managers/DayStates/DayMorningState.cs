@@ -20,8 +20,4 @@ public class DayMorningState : DayBaseState {
         }
     }
 
-    public override bool CanMobSpawn() {
-        return false;
-    }
-
 }

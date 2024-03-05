@@ -7,18 +7,27 @@ using UnityEngine;
 /// </summary>
 public class DayNightState : DayBaseState {
 
-    private const float AFTERNOON_THRESHOLD = 28800f; //8-Hours in seconds
+    private float currentSpawnTimer;
 
     public override void EnterState(DayManager context) {
-        //TO-DO
+        currentSpawnTimer = 0f;
     }
 
+    /// <summary>
+    /// During the night, we check if we can spawn a new enemy every <c>enemySpawnInterval</c>.<br/>
+    /// If the current timer is greater or equal to that we first reset it, and spawn a new enemy.
+    /// </summary>
+    /// <param name="context"></param>
     public override void UpdateState(DayManager context) {
-        //TO-DO
-    }
 
-    public override bool CanMobSpawn() {
-        return true;
+        if (!EnemySpawnManager.Instance.CanSpawnNewEnemy()) return;
+
+        if(currentSpawnTimer >= GameManager.Instance.GetCurrentDifficultyData().GetEnemySpawnInterval()) {
+            currentSpawnTimer = 0f;
+            EnemySpawnManager.Instance.SpawnRandomEnemy();
+        }
+        currentSpawnTimer += Time.deltaTime;
+
     }
 
 }

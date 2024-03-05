@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,15 +16,18 @@ public class GameManager : MonoBehaviour {
     }
 
     private GameState state;
+    [SerializeField] private GameDifficultyData[] gameDifficulties;
+    private int gameDifficultyIndex;
 
     private void Awake() {
         //We check if there is already a Singleton of GameManager
         if (Instance != null && Instance != this) {
             Destroy(this);
-            throw new System.Exception("An Instance of this Singleton already exists");
+            throw new System.Exception("[{$this.name}] >>> An Instance of this Singleton already exists!");
         } else {
             //There are not instances
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
     }
 
@@ -54,12 +58,41 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    public GameDifficultyData GetCurrentDifficultyData() {
+        return gameDifficulties[gameDifficultyIndex];
+    }
+
     public bool IsGamePlaying() {
         return state == GameState.GamePlaying;
     }
 
     public bool IsGamePause() {
         return state == GameState.GamePaused;
+    }
+
+}
+
+[System.Serializable]
+public struct GameDifficultyData {
+
+    public enum GameDifficultyLevel {
+        Easy,
+        Normal,
+        Hard,
+        Nightmare
+    }
+
+    [SerializeField] private GameDifficultyLevel difficultyLevel;
+    [SerializeField] [Min(1)] private int difficultyMaxPwrLvl;
+    [SerializeField] [Min(15)] private int enemySpawnInterval;
+    [SerializeField] [Min(1)] private int difficultyDayTimeMultiplier;
+
+    public int GetDifficultyMaxPwrLevel() {
+        return difficultyMaxPwrLvl;
+    }
+
+    public int GetEnemySpawnInterval() {
+        return enemySpawnInterval;
     }
 
 }
