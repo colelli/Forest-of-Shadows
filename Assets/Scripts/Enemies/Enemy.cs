@@ -5,15 +5,22 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class Enemy : MonoBehaviour, IEnemy {
 
-    protected Transform target;
-    protected Vector3 targetPosition;
+    [Header("Target configs")]
+    [SerializeField] [Tooltip("Mob default target transform")] protected Transform target;
 
-    [SerializeField] protected EnemySO enemyType;
+    [Header("Mob Configs")]
+    [SerializeField] [Tooltip("EnemySO default type to retrieve statistics from")] protected EnemySO enemyType;
+    private bool isStunned;
+    [SerializeField] [Min(0)] private float defaultMaxStunDuration;
+    private float stunDuration;
+    protected float currentHealth;
+    protected Collider mobCollider;
+    protected Rigidbody rb;
+
+    [Header("Mob Audio Configs")]
     [SerializeField] private AudioClip[] mobNoises;
     [SerializeField] private AudioClip[] onDeathSounds;
     protected AudioSource audioSource;
-    protected Collider mobCollider;
-    protected float currentHealth;
 
     private const float mobPlayNoiseUpperBound = 60f;
     private const float mobPlayNoiseLowerBound = 25f;
@@ -21,26 +28,34 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
 
     protected void Awake() {
         audioSource = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody>();
         currentHealth = enemyType.enemyMaxHealth;
+        isStunned = false;
     }
 
     protected void Start() {
-        target = FindObjectOfType<Player>().transform;
-        targetPosition = target.position;
         mobPlayNoiseInterval = Random.Range(mobPlayNoiseLowerBound, mobPlayNoiseUpperBound);
     }
 
     protected void Update() {
 
-        targetPosition = target.position;
-
         if (mobPlayNoiseInterval <= 0f) {
             //We play a random noise every random seconds
             mobPlayNoiseInterval = Random.Range(mobPlayNoiseLowerBound, mobPlayNoiseUpperBound);
-            PlayNoise(mobNoises[Random.Range(0, mobNoises.Length)]);
+            //PlayNoise(mobNoises[Random.Range(0, mobNoises.Length)]);
         } else {
             mobPlayNoiseInterval -= Time.deltaTime;
         }
+
+        isStunned = stunDuration > 0f;
+        if(!isStunned) {
+            //Mob can move
+            Move();
+        } else {
+            //Mob is still stunned -> reduce remaining duration
+            stunDuration -= Time.deltaTime;
+        }
+
 
     }
 
@@ -58,12 +73,16 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
     }
 
     private void Death() {
-        PlayNoise(onDeathSounds[Random.Range(0, onDeathSounds.Length)]);
+        //PlayNoise(onDeathSounds[Random.Range(0, onDeathSounds.Length)]);
         Destroy(gameObject);
     }
 
     protected void PlayNoise(AudioClip noise) {
         audioSource.PlayOneShot(noise);
+    }
+
+    protected void StunSelf() {
+        stunDuration = defaultMaxStunDuration;
     }
 
     public abstract bool IsSensibleToLight();

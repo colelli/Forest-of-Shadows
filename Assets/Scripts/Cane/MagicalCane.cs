@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class MagicalCane : MonoBehaviour {
 
-    [Header("Light Source Transform")]
-    [SerializeField] private Transform lightSource;
-
     [Header("Light Source Configs")]
     [SerializeField] [Min(1.5f)] [Range(1.5f, 5f)] private float lightSourceRadius;
     [SerializeField] [Tooltip("Toggles IsTrigger in Collider options")] private bool isColliderTrigger = true;
@@ -18,7 +15,7 @@ public class MagicalCane : MonoBehaviour {
     private SphereCollider lightSourceCollider;
 
     private void Awake() {
-        lightSourceCollider = lightSource.GetComponent<SphereCollider>();
+        lightSourceCollider = GetComponent<SphereCollider>();
     }
 
     private void Start() {
