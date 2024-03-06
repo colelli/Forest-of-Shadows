@@ -17,7 +17,7 @@ public class HandShadow : Enemy {
         Vector3 velocity = moveDirection * enemyType.enemyMaxMovementSpeed;
         Vector3 moveAmount = velocity * Time.deltaTime;
 
-        transform.position += moveAmount;
+        transform.position += new Vector3(moveAmount.x, 0, moveAmount.z);
     }
 
     private void RetreatFromLightSource() {
@@ -31,13 +31,14 @@ public class HandShadow : Enemy {
     private void OnTriggerEnter(Collider other) {
 
         if(other.TryGetComponent<MagicalCane>(out MagicalCane magicalCane)) {
-            //We hit the light source -> the mob takes damage and retreats
-            TakeDamage(10f);
-            RetreatFromLightSource();
-        }
-
-        if(other.TryGetComponent<Player>(out Player player)) {
+            if (magicalCane.IsLightOn() && IsSensibleToLight()) {
+                //We hit the light source -> the mob takes damage and retreats
+                TakeDamage(magicalCane.GetAttackDamage());
+                RetreatFromLightSource();
+            }  
+        }else if(other.TryGetComponent<Player>(out Player player)) {
             //We hit a player
+            Debug.Log("Player hit!");
             DealDamage(player);
         }
 

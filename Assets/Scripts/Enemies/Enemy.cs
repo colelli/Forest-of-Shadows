@@ -34,6 +34,10 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
     }
 
     protected void Start() {
+        if (target == null) {
+            //A target has not been assigned -> We default it to the Player
+            FindTarget();
+        }
         mobPlayNoiseInterval = Random.Range(mobPlayNoiseLowerBound, mobPlayNoiseUpperBound);
     }
 
@@ -57,6 +61,10 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
         }
 
 
+    }
+
+    protected void FindTarget() {
+        target = FindObjectOfType<Player>().transform;
     }
 
     public void DealDamage(Player player) {

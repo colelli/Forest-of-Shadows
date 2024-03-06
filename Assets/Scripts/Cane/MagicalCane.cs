@@ -3,26 +3,31 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
 public class MagicalCane : MonoBehaviour {
 
     [Header("Light Source Configs")]
+    [SerializeField] private bool autoUpdate;
     [SerializeField] [Min(1.5f)] [Range(1.5f, 5f)] private float lightSourceRadius;
     [SerializeField] [Tooltip("Toggles IsTrigger in Collider options")] private bool isColliderTrigger = true;
     [SerializeField] private bool isLightOn;
-    [SerializeField] private bool canPushShadowsAway = true;
-    [SerializeField] private LayerMask shadowMask;
+    [SerializeField] private float baseAttackDamage = 10f;
+    private float attackDamage;
 
     private SphereCollider lightSourceCollider;
 
     private void Awake() {
         lightSourceCollider = GetComponent<SphereCollider>();
+        attackDamage = baseAttackDamage;
     }
 
     private void Start() {
         SetupLightSourceCollider();
     }
 
-    private void SetupLightSourceCollider() {
+    public void SetupLightSourceCollider() {
+        if(lightSourceCollider == null) lightSourceCollider = GetComponent<SphereCollider>();
+
         lightSourceCollider.radius = lightSourceRadius; //TO-DO: Add powerup 
         lightSourceCollider.isTrigger = isColliderTrigger;
     }
@@ -34,12 +39,12 @@ public class MagicalCane : MonoBehaviour {
         isLightOn = !isLightOn;
     }
 
-    public bool CanPushShadowAway() {
-        return canPushShadowsAway;
+    public float GetAttackDamage() {
+        return attackDamage;
     }
 
-    public void ToggleShadowPushAbility() {
-        canPushShadowsAway = !canPushShadowsAway;
+    public bool CanAutoUpdate() {
+        return autoUpdate;
     }
 
 }

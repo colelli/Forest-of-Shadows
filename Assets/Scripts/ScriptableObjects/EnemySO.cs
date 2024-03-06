@@ -14,7 +14,4 @@ public class EnemySO : ScriptableObject {
     [Min(1)] public int enemyPowerLevel;
     [Min(0)] public float attackDamage;
 
-    [Header("Enemy Debug Configs")]
-    public Color enemyDebugColour;
-
 }

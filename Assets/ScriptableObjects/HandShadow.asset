@@ -18,4 +18,5 @@ MonoBehaviour:
   enemyMaxHealth: 25
   enemyMaxMovementSpeed: 2
   enemyPowerLevel: 1
-  enemyDebugColour: {r: 1, g: 0.25943398, b: 0.25943398, a: 0}
+  attackDamage: 0
+  enemyDebugMaterial: {fileID: 2100000, guid: c2642e787907098439dac06bc535bc73, type: 2}

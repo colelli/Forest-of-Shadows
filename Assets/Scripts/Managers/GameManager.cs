@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private GameState state;
+    [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     private int gameDifficultyIndex;
 
@@ -28,6 +29,12 @@ public class GameManager : MonoBehaviour {
             //There are not instances
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
+    private void Start() {
+        if (debugMode) {
+            FindObjectOfType<Player>().GetComponent<PlayerDebug>().enabled = true;
         }
     }
 
