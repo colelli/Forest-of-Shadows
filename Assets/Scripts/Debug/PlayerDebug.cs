@@ -13,7 +13,11 @@ public class PlayerDebug : MonoBehaviour {
     private CharacterController characterController;
     private SphereCollider lightSourceCollider;
 
-    private void Awake() {
+    private void Start() {
+        if (!GameManager.Instance.IsInDebugMode()) {
+            GetComponent<PlayerDebug>().enabled = false;
+        }
+
         parent = new GameObject("Debug");
         parent.transform.parent = transform;
         lightSourceCollider = GetComponent<SphereCollider>();

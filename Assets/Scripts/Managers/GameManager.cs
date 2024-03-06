@@ -32,12 +32,6 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void Start() {
-        if (debugMode) {
-            FindObjectOfType<Player>().GetComponent<PlayerDebug>().enabled = true;
-        }
-    }
-
     private void Update() {
 
         switch (state) {
@@ -76,6 +70,10 @@ public class GameManager : MonoBehaviour {
     public bool IsGamePause() {
         return state == GameState.GamePaused;
     }
+    public bool IsInDebugMode() {
+        return debugMode;
+    }
+
 
 }
 
