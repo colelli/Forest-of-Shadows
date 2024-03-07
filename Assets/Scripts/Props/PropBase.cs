@@ -13,12 +13,6 @@ public class PropBase : MonoBehaviour {
         propCollider.isTrigger = true;
     }
 
-    public PropBase SpawnProp(PropSO propSO) {
-        Transform propSoTransform = Instantiate(propSO.propPrefab);
-        PropBase propBase = propSoTransform.GetComponent<PropBase>();
-        return propBase;
-    }
-
     public PropSO GetPropSO() {
         return propSO;
     }

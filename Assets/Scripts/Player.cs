@@ -59,10 +59,9 @@ public class Player : MonoBehaviour {
     }
 
     private void PickUpProp(PropBase prop) {
-        //Logic to pick up a prop
-
-        prop.DestroySelf();
-        nearbyProp = null;
+        if (DeliveryManager.Instance.DeliverProp(prop)) {
+            nearbyProp = null;
+        }
     }
 
     private IEnumerator TimerCoroutine(float timer, Action callback) {

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 397d5b9d5b4a8994c8fc0a50cef98755, type: 3}
   m_Name: PropSOList
   m_EditorClassIdentifier: 
-  propSOList: []
+  propSOList:
+  - {fileID: 11400000, guid: 43554b3b465a0ff499bd86fd6e93d066, type: 2}
