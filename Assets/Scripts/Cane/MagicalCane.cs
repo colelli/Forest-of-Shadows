@@ -11,6 +11,7 @@ public class MagicalCane : MonoBehaviour {
     [SerializeField] [Min(1.5f)] [Range(1.5f, 5f)] private float lightSourceRadius;
     [SerializeField] [Tooltip("Toggles IsTrigger in Collider options")] private bool isColliderTrigger = true;
     [SerializeField] private bool isLightOn;
+    private int interactionsNeededToTurnOn = 5;
     [SerializeField] private float baseAttackDamage = 10f;
     private float attackDamage;
 
@@ -32,11 +33,16 @@ public class MagicalCane : MonoBehaviour {
         lightSourceCollider.isTrigger = isColliderTrigger;
     }
 
+    public int GetNumbersOfInteractionsNeededToTurnOn() {
+        return interactionsNeededToTurnOn;
+    }
+
     public bool IsLightOn() {
         return isLightOn;
     }
     public void ToggleLight() {
         isLightOn = !isLightOn;
+        Debug.Log($"Light Status: {isLightOn}");
     }
 
     public float GetAttackDamage() {

@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -7,11 +9,15 @@ namespace StarterAssets
 {
 	public class StarterAssetsInputs : MonoBehaviour
 	{
+
+		public event EventHandler OnInteractAction; //Event to listen to from the player class 
+
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		public bool pickUp;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -21,7 +27,7 @@ namespace StarterAssets
 		public bool cursorInputForLook = true;
 
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+        public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
 		}
@@ -43,6 +49,11 @@ namespace StarterAssets
 		{
 			SprintInput(value.isPressed);
 		}
+
+		public void OnPickUp(InputValue value) {
+			PickUpInput(value.isPressed);
+		}
+
 #endif
 
 
@@ -66,6 +77,13 @@ namespace StarterAssets
 			sprint = newSprintState;
 		}
 
+		public void PickUpInput(bool newPickUpState) {
+			if (newPickUpState) {
+                pickUp = newPickUpState;
+				OnInteractAction?.Invoke(this, EventArgs.Empty);
+			}
+		}
+
 		private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
@@ -75,6 +93,7 @@ namespace StarterAssets
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
+
 	}
 	
 }

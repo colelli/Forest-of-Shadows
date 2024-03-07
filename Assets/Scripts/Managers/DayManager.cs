@@ -44,5 +44,9 @@ public class DayManager {
         return gamePlayingTime;
     }
 
+    public bool IsNight() {
+        return currentState == nightState;
+    }
+
 }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance { get; private set; }
-    public static DayManager dayManager { get; private set; }
+    public static DayManager DayManager { get; private set; }
 
     private enum GameState {
         WaitingToStart,
@@ -41,16 +41,16 @@ public class GameManager : MonoBehaviour {
                 break; 
             case GameState.GamePlaying:
 
-                if(dayManager == null) {
+                if(DayManager == null) {
                     //We start a new Day
-                    dayManager = new DayManager();
+                    DayManager = new DayManager();
                 } else {
-                    dayManager.UpdateCurrentState();
+                    DayManager.UpdateCurrentState();
                 }
 
                 break;
             case GameState.GamePaused:
-                dayManager.PauseDay();
+                DayManager.PauseDay();
                 break;
             case GameState.GameOver:
                 break;
