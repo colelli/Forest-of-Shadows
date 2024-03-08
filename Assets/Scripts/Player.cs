@@ -9,7 +9,9 @@ public class Player : MonoBehaviour {
     private StarterAssetsInputs inputs;
     private MagicalCane magicalCane;
     private Coroutine lightTimerCoroutine;
-    private PropBase nearbyProp;
+
+    private IInteractable interactTarget;
+    private bool isInteracting;
 
     private bool coroutineRunning;
     private float resetInteractionTimer = 3f;
@@ -19,6 +21,7 @@ public class Player : MonoBehaviour {
     private float currentHealth;
 
     private void Awake() {
+        isInteracting = false;
         coroutineRunning = false;
         currentHealth = maxHealth;
         interactionsWithLight = 0;
@@ -34,9 +37,13 @@ public class Player : MonoBehaviour {
 
         if (!magicalCane.IsLightOn()) {
             InteractWithLight();
-        }else if (nearbyProp != null) {
+        }else if (interactTarget != null) {
             //We are next to a prop that we can pick up
-            PickUpProp(nearbyProp);
+            isInteracting = !isInteracting;
+            if (interactTarget.Interact() && isInteracting) {
+                interactTarget = null;
+            }
+            isInteracting = !isInteracting;
         }
 
     }
@@ -56,12 +63,6 @@ public class Player : MonoBehaviour {
         }
 
         coroutineRunning = !coroutineRunning;
-    }
-
-    private void PickUpProp(PropBase prop) {
-        if (DeliveryManager.Instance.DeliverProp(prop)) {
-            nearbyProp = null;
-        }
     }
 
     private IEnumerator TimerCoroutine(float timer, Action callback) {
@@ -94,17 +95,17 @@ public class Player : MonoBehaviour {
     private void OnDestroy() {
         inputs.OnInteractAction -= Inputs_OnInteractAction;
     }
-
+    
     private void OnTriggerEnter(Collider other) {
-        if(other.TryGetComponent<PropBase>(out PropBase prop)) {
-            nearbyProp = prop;
+        if(other.TryGetComponent<IInteractable>(out IInteractable prop)) {
+            interactTarget = prop;
         }
     }
 
     private void OnTriggerExit(Collider other) {
-        if(other.TryGetComponent<PropBase>(out PropBase prop)) {
-            if(nearbyProp == prop) {
-                nearbyProp = null;
+        if(other.TryGetComponent<IInteractable>(out IInteractable prop)) {
+            if(interactTarget == prop) {
+                interactTarget = null;
             }
         }
     }

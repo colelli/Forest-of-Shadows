@@ -32,7 +32,7 @@ public class PlayerDebug : MonoBehaviour {
         lightHitbox.AddComponent<MeshRenderer>().material = lightDebugMat;
         lightHitbox.AddComponent<MeshFilter>().mesh = RetreiveSphereMesh();
         lightHitbox.transform.localScale = Vector3.one * lightSourceCollider.radius * 2;
-        lightHitbox.transform.position = lightSourceCollider.center;
+        lightHitbox.transform.position = transform.position + lightSourceCollider.center;
     }
 
     private void CreatePlayerHitbox() {
@@ -42,7 +42,7 @@ public class PlayerDebug : MonoBehaviour {
         playerHitbox.AddComponent<MeshFilter>().mesh = RetrieveCapsuleMesh();
         float xz = characterController.radius * 2;
         playerHitbox.transform.localScale = new Vector3(xz, characterController.height / 2f, xz);
-        playerHitbox.transform.position = characterController.center;
+        playerHitbox.transform.position = transform.position + characterController.center;
     }
 
     private Mesh RetreiveSphereMesh() {

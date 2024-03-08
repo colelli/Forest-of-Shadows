@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
-public class PropBase : MonoBehaviour {
+public class PropBase : MonoBehaviour, IInteractable {
 
     [SerializeField] private PropSO propSO;
     private SphereCollider propCollider;
@@ -19,6 +19,14 @@ public class PropBase : MonoBehaviour {
 
     public void DestroySelf() {
         Destroy(gameObject);
+    }
+
+    public bool Interact() {
+        //Player interacted -> We deliver the prop and notify the result
+        if (DeliveryManager.Instance.DeliverProp(this)) {
+            return true;
+        }
+        return false;
     }
 
 }
