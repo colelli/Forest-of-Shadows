@@ -11,6 +11,7 @@ public class DayAfternoonState : DayBaseState {
 
     public override void EnterState(DayManager context) {
         //TO-DO
+        Debug.Log("Afternoon started");
     }
 
     public override void UpdateState(DayManager context) {

@@ -462,19 +462,20 @@ MonoBehaviour:
   - difficultyLevel: 0
     difficultyMaxPwrLvl: 2
     enemySpawnInterval: 60
-    difficultyDayTimeMultiplier: 5
+    difficultyDayTimeMultiplier: 50
   - difficultyLevel: 1
     difficultyMaxPwrLvl: 3
     enemySpawnInterval: 30
-    difficultyDayTimeMultiplier: 10
+    difficultyDayTimeMultiplier: 100
   - difficultyLevel: 2
     difficultyMaxPwrLvl: 5
     enemySpawnInterval: 30
-    difficultyDayTimeMultiplier: 20
+    difficultyDayTimeMultiplier: 200
   - difficultyLevel: 3
     difficultyMaxPwrLvl: 8
     enemySpawnInterval: 15
-    difficultyDayTimeMultiplier: 30
+    difficultyDayTimeMultiplier: 300
+  gameDifficultyIndex: 3
 --- !u!4 &912616257
 Transform:
   m_ObjectHideFlags: 0

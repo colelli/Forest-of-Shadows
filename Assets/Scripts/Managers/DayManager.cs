@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class DayManager { 
@@ -8,8 +9,9 @@ public class DayManager {
     public readonly DayNightState nightState = new DayNightState();
 
     private const float DEFAULT_NEW_GAME_TIME = 0f;
+    private const float DEFAULT_START_OF_DAY_TIME = 21600f;
     private float gamePlayingTime;
-    private float gameTimeMultiplier = 10f;
+    private float gameTimeMultiplier;
 
     public DayManager() {
         currentState = mornigState;
@@ -21,6 +23,7 @@ public class DayManager {
     /// </summary>
     public void StartDay() {
         gamePlayingTime = DEFAULT_NEW_GAME_TIME;
+        gameTimeMultiplier = GameManager.Instance.GetCurrentDifficultyData().GetDifficultyDayTimeMultiplier();
     }
 
     /// <summary>
@@ -42,6 +45,12 @@ public class DayManager {
 
     public float GetCurrentGameTime() {
         return gamePlayingTime;
+    }
+
+    public string GetCurrentGameTimeInHHMMSS() {
+        TimeSpan timeSpan = TimeSpan.FromSeconds(DEFAULT_START_OF_DAY_TIME + gamePlayingTime);
+        string timeText = String.Format("{0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+        return timeText;
     }
 
     public bool IsNight() {

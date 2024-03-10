@@ -18,7 +18,8 @@ public class GameManager : MonoBehaviour {
     private GameState state;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
-    private int gameDifficultyIndex;
+    [SerializeField] private int gameDifficultyIndex;
+    private string currentTime;
 
     private void Awake() {
         //We check if there is already a Singleton of GameManager
@@ -32,6 +33,10 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        state = GameState.GamePlaying;
+    }
+
     private void Update() {
 
         switch (state) {
@@ -43,9 +48,11 @@ public class GameManager : MonoBehaviour {
 
                 if(DayManager == null) {
                     //We start a new Day
+                    Debug.Log("Game Started\n");
                     DayManager = new DayManager();
                 } else {
                     DayManager.UpdateCurrentState();
+                    currentTime = DayManager.GetCurrentGameTimeInHHMMSS();
                 }
 
                 break;
@@ -98,6 +105,10 @@ public struct GameDifficultyData {
 
     public int GetEnemySpawnInterval() {
         return enemySpawnInterval;
+    }
+
+    public int GetDifficultyDayTimeMultiplier() {
+        return difficultyDayTimeMultiplier;
     }
 
 }
