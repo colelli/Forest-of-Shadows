@@ -11,7 +11,6 @@ public class Player : MonoBehaviour {
     private Coroutine lightTimerCoroutine;
 
     private IInteractable interactTarget;
-    private bool isInteracting;
 
     private bool coroutineRunning;
     private float resetInteractionTimer = 3f;
@@ -21,7 +20,6 @@ public class Player : MonoBehaviour {
     private float currentHealth;
 
     private void Awake() {
-        isInteracting = false;
         coroutineRunning = false;
         currentHealth = maxHealth;
         interactionsWithLight = 0;
@@ -39,11 +37,9 @@ public class Player : MonoBehaviour {
             InteractWithLight();
         }else if (interactTarget != null) {
             //We are next to a prop that we can pick up
-            isInteracting = !isInteracting;
-            if (interactTarget.Interact() && isInteracting) {
+            if (interactTarget.Interact()) {
                 interactTarget = null;
             }
-            isInteracting = !isInteracting;
         }
 
     }
