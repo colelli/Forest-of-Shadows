@@ -10,8 +10,8 @@ public class DayNightState : DayBaseState {
     private float currentSpawnTimer;
 
     public override void EnterState(DayManager context) {
-        currentSpawnTimer = 0f;
-        Debug.Log("Night started");
+        currentSpawnTimer = 999f;
+        Debug.Log($"[{context.GetType()}] >>> Night started");
     }
 
     /// <summary>

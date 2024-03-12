@@ -10,6 +10,7 @@ public class EnemySpawnManager : MonoBehaviour {
     private int maxPowerLevel;
     private int currentPowerLevel;
 
+    private Vector3 defaultSpawnPoint = new Vector3(0f, 0.1f, 0f);
     private bool canSpawnNewEnemy;
 
     private void Awake() {
@@ -38,7 +39,7 @@ public class EnemySpawnManager : MonoBehaviour {
             EnemySO enemy = enemyList.enemySOList[Random.Range(0, enemyList.enemySOList.Count)];
             if(currentPowerLevel + enemy.enemyPowerLevel <= maxPowerLevel) {
                 //We can spawn the current enemy
-                Instantiate(enemy, Vector3.zero, Quaternion.Euler(Vector3.zero));
+                Instantiate(enemy.enemyPrefab, defaultSpawnPoint, Quaternion.Euler(Vector3.zero));
                 currentPowerLevel += enemy.enemyPowerLevel;
             }
 

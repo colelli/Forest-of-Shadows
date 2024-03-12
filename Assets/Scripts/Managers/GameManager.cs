@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour {
 
                 if(DayManager == null) {
                     //We start a new Day
-                    Debug.Log("Game Started\n");
+                    Debug.Log($"[{this.name}] >>> Game Started\n");
                     DayManager = new DayManager();
                 } else {
                     DayManager.UpdateCurrentState();

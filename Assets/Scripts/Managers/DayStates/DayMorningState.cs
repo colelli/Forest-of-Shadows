@@ -11,7 +11,7 @@ public class DayMorningState : DayBaseState {
 
     public override void EnterState(DayManager context) {
         context.StartDay();
-        Debug.Log("Morning started");
+        Debug.Log($"[{context.GetType()}] >>> Morning started");
     }
 
     public override void UpdateState(DayManager context) {
