@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private GameState state;
+    [SerializeField] private Player player;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
@@ -81,6 +82,10 @@ public class GameManager : MonoBehaviour {
         return debugMode;
     }
 
+    public Player GetPlayer() {
+        return player;
+    }
+
 
 }
 
@@ -98,6 +103,7 @@ public struct GameDifficultyData {
     [SerializeField] [Min(1)] private int difficultyMaxPwrLvl;
     [SerializeField] [Min(15)] private int enemySpawnInterval;
     [SerializeField] [Min(1)] private int difficultyDayTimeMultiplier;
+    [SerializeField] [Min(1)] private int sanityDebuff;
 
     public int GetDifficultyMaxPwrLevel() {
         return difficultyMaxPwrLvl;
@@ -109,6 +115,10 @@ public struct GameDifficultyData {
 
     public int GetDifficultyDayTimeMultiplier() {
         return difficultyDayTimeMultiplier;
+    }
+
+    public int GetSanityDebuff() {
+        return sanityDebuff;
     }
 
 }

@@ -8,8 +8,11 @@ using UnityEngine;
 public class DayNightState : DayBaseState {
 
     private float currentSpawnTimer;
+    private const float maxDebuffTimer = 60f;
+    private float debuffTimer;
 
     public override void EnterState(DayManager context) {
+        debuffTimer = maxDebuffTimer;
         currentSpawnTimer = 999f;
         Debug.Log($"[{context.GetType()}] >>> Night started");
     }
@@ -21,14 +24,28 @@ public class DayNightState : DayBaseState {
     /// <param name="context"></param>
     public override void UpdateState(DayManager context) {
 
+        ReducePlayerSanity();
+        TrySpawnEnemy();
+
+    }
+
+    private void ReducePlayerSanity() {
+        if(debuffTimer <= 0) {
+            //We can apply the debuff
+            GameManager.Instance.GetPlayer().DrainSanity();
+            debuffTimer = maxDebuffTimer;
+        }
+        debuffTimer -= Time.deltaTime;
+    }
+
+    private void TrySpawnEnemy() {
         if (!EnemySpawnManager.Instance.CanSpawnNewEnemy()) return;
 
-        if(currentSpawnTimer >= GameManager.Instance.GetCurrentDifficultyData().GetEnemySpawnInterval()) {
+        if (currentSpawnTimer >= GameManager.Instance.GetCurrentDifficultyData().GetEnemySpawnInterval()) {
             currentSpawnTimer = 0f;
             EnemySpawnManager.Instance.SpawnRandomEnemy();
         }
         currentSpawnTimer += Time.deltaTime;
-
     }
 
 }

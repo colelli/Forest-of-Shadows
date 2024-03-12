@@ -16,11 +16,14 @@ public class Player : MonoBehaviour {
     private float resetInteractionTimer = 3f;
     private int interactionsWithLight;
 
+    private float maxSanity = 100f;
+    private float sanity;
     private const float maxHealth = 100f;
     private float currentHealth;
 
     private void Awake() {
         coroutineRunning = false;
+        sanity = maxSanity;
         currentHealth = maxHealth;
         interactionsWithLight = 0;
     }
@@ -78,8 +81,24 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void DrainSanity() {
+        if(sanity >= 0) {
+            sanity -= GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff();
+        } else {
+            maxSanity -= maxSanity * .2f;
+            sanity = maxSanity;
+            BlowTorch();
+        }
+    }
+
+    private void BlowTorch() {
+        magicalCane.ToggleLight();
+    }
+
     private void Death() {
-        //Player failed, will call GameOver
+        if(currentHealth <= 0) {
+            Debug.Log("Game Over");
+        }
     }
 
     private void ResetNumbersOfInteractions() {

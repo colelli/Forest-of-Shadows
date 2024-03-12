@@ -22,7 +22,9 @@ public class HandShadow : Enemy {
 
     private void RetreatFromLightSource() {
         //For the moment we move the mob 10 units back
-        Vector3 moveDirection = (target.position - transform.position).normalized;
+        Vector3 targetVec = new Vector3(target.position.x, 0, target.position.z);
+        Vector3 transformVec = new Vector3(transform.position.x, 0, transform.position.z);
+        Vector3 moveDirection = (targetVec - transformVec).normalized;
         Vector3 moveAmount = moveDirection * -10f;
         transform.Translate(moveAmount);
         StunSelf();
