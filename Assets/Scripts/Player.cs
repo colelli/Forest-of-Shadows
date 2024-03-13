@@ -52,6 +52,10 @@ public class Player : MonoBehaviour {
 
         if( interactionsWithLight >= magicalCane.GetNumbersOfInteractionsNeededToTurnOn() ) {
             magicalCane.ToggleLight();
+            if(sanity == 0) {
+                maxSanity -= maxSanity * .2f;
+                sanity = maxSanity;
+            }
         } else {
             if (coroutineRunning) {
                 Debug.Log("Coroutine stopped!");
@@ -73,6 +77,10 @@ public class Player : MonoBehaviour {
         callback();
     }
 
+    /// <summary>
+    /// Method to allow entities to hit and damage the player.
+    /// </summary>
+    /// <param name="dmgAmount">Amount of damage taken</param>
     public void TakeDamage(float dmgAmount) {
         if(currentHealth <= dmgAmount) {
             Death();
@@ -81,14 +89,18 @@ public class Player : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Method to allow entities (and game mangers) to drain player's sanity.<br/>
+    /// If the sanity drops below a certain threshold (0 by default), the player will go crazy and turn off his magic light.
+    /// </summary>
     public void DrainSanity() {
-        if(sanity >= 0) {
-            sanity -= GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff();
-        } else {
-            maxSanity -= maxSanity * .2f;
-            sanity = maxSanity;
+
+        if(sanity > 0) {
+            sanity = Mathf.Clamp(sanity - GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff(), 0f, maxSanity);
+        } else { 
             BlowTorch();
         }
+
     }
 
     private void BlowTorch() {

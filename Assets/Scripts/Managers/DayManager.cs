@@ -8,12 +8,16 @@ public class DayManager {
     public readonly DayAfternoonState afternoonState = new DayAfternoonState();
     public readonly DayNightState nightState = new DayNightState();
 
+    public readonly GameDifficultyData gameDifficultyData;
+
     private const float DEFAULT_NEW_GAME_TIME = 0f;
     private const float DEFAULT_START_OF_DAY_TIME = 21600f;
+    private const float DEFAULT_MAX_GAME_TIME = 86400f;
     private float gamePlayingTime;
     private float gameTimeMultiplier;
 
     public DayManager() {
+        gameDifficultyData = GameManager.Instance.GetCurrentDifficultyData();
         currentState = mornigState;
         currentState.EnterState(this);
     }
@@ -34,7 +38,9 @@ public class DayManager {
     }
 
     public void UpdateCurrentState() {
-        gamePlayingTime += Time.deltaTime * gameTimeMultiplier;
+        if(gamePlayingTime < DEFAULT_MAX_GAME_TIME) {
+            gamePlayingTime += Time.deltaTime * gameTimeMultiplier;
+        }
         currentState.UpdateState(this);
     }
 

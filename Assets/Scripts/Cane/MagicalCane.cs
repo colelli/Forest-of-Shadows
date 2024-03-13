@@ -42,6 +42,7 @@ public class MagicalCane : MonoBehaviour {
     }
     public void ToggleLight() {
         isLightOn = !isLightOn;
+        lightSourceCollider.enabled = isLightOn;
         Debug.Log($"Light Status: {isLightOn}");
     }
 

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50903abdd1986e4ba936384f739b552, type: 3}
   m_Name: HandShadowSO
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 6748997250091712558, guid: ba280b7ba5cc737479a23ad02b6ee92d,
+    type: 3}
   enemyIcon: {fileID: 0}
   enemyName: Hand Shadow
   enemyMaxHealth: 25
   enemyMaxMovementSpeed: 2
-  enemyPowerLevel: 1
-  attackDamage: 0
-  enemyDebugMaterial: {fileID: 2100000, guid: c2642e787907098439dac06bc535bc73, type: 2}
+  enemyPowerLevel: 2
+  baseAttackDamage: 10

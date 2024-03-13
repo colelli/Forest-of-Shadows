@@ -32,15 +32,19 @@ public class HandShadow : Enemy {
 
     private void OnTriggerEnter(Collider other) {
 
-        if(other.TryGetComponent<MagicalCane>(out MagicalCane magicalCane)) {
-            if (magicalCane.IsLightOn() && IsSensibleToLight()) {
+        if(other.TryGetComponent<MagicalCane>(out MagicalCane magicalCane) && magicalCane.IsLightOn()) {
+            if (IsSensibleToLight()) {
                 //We hit the light source -> the mob takes damage and retreats
-                TakeDamage(magicalCane.GetAttackDamage());
                 RetreatFromLightSource();
-            }  
+                TakeDamage(magicalCane.GetAttackDamage());
+                if (other.TryGetComponent<Player>(out Player player)) {
+                    player.DrainSanity();
+                }
+            }
         }else if(other.TryGetComponent<Player>(out Player player)) {
-            //We hit a player
+            //We hit a player -> damage him and despawn
             Debug.Log("Player hit!");
+            Death();
             DealDamage(player);
         }
 

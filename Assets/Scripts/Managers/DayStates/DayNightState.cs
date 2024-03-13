@@ -8,11 +8,10 @@ using UnityEngine;
 public class DayNightState : DayBaseState {
 
     private float currentSpawnTimer;
-    private const float maxDebuffTimer = 60f;
     private float debuffTimer;
 
     public override void EnterState(DayManager context) {
-        debuffTimer = maxDebuffTimer;
+        debuffTimer = context.gameDifficultyData.GetSanityDebuffInterval();
         currentSpawnTimer = 999f;
         Debug.Log($"[{context.GetType()}] >>> Night started");
     }
@@ -24,24 +23,24 @@ public class DayNightState : DayBaseState {
     /// <param name="context"></param>
     public override void UpdateState(DayManager context) {
 
-        ReducePlayerSanity();
-        TrySpawnEnemy();
+        ReducePlayerSanity(context);
+        TrySpawnEnemy(context);
 
     }
 
-    private void ReducePlayerSanity() {
+    private void ReducePlayerSanity(DayManager context) {
         if(debuffTimer <= 0) {
             //We can apply the debuff
-            GameManager.Instance.GetPlayer().DrainSanity();
-            debuffTimer = maxDebuffTimer;
+            GameManager.Instance.GetPlayer()?.DrainSanity();
+            debuffTimer = context.gameDifficultyData.GetSanityDebuffInterval();
         }
         debuffTimer -= Time.deltaTime;
     }
 
-    private void TrySpawnEnemy() {
+    private void TrySpawnEnemy(DayManager context) {
         if (!EnemySpawnManager.Instance.CanSpawnNewEnemy()) return;
 
-        if (currentSpawnTimer >= GameManager.Instance.GetCurrentDifficultyData().GetEnemySpawnInterval()) {
+        if (currentSpawnTimer >= context.gameDifficultyData.GetEnemySpawnInterval()) {
             currentSpawnTimer = 0f;
             EnemySpawnManager.Instance.SpawnRandomEnemy();
         }

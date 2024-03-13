@@ -10,7 +10,7 @@ public class EnemySpawnManager : MonoBehaviour {
     private int maxPowerLevel;
     private int currentPowerLevel;
 
-    private Vector3 defaultSpawnPoint = new Vector3(0f, 0.1f, 0f);
+    private Vector3 defaultSpawnPoint = new Vector3(0f, 0.2f, 0f);
     private bool canSpawnNewEnemy;
 
     private void Awake() {

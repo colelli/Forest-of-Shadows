@@ -22,6 +22,8 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
     [SerializeField] private AudioClip[] onDeathSounds;
     protected AudioSource audioSource;
 
+    private float attackDamage;
+
     private const float mobPlayNoiseUpperBound = 60f;
     private const float mobPlayNoiseLowerBound = 25f;
     private float mobPlayNoiseInterval;
@@ -39,6 +41,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
             FindTarget();
         }
         mobPlayNoiseInterval = Random.Range(mobPlayNoiseLowerBound, mobPlayNoiseUpperBound);
+        attackDamage = enemyType.baseAttackDamage * GameManager.Instance.GetCurrentDifficultyData().GetDifficultyMultiplier();
     }
 
     protected void Update() {
@@ -68,7 +71,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
     }
 
     public void DealDamage(Player player) {
-        player.TakeDamage(enemyType.attackDamage);
+        player.TakeDamage(attackDamage);
     }
 
     public void TakeDamage(float dmgAmount) {
@@ -80,7 +83,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
         }
     }
 
-    private void Death() {
+    protected void Death() {
         //PlayNoise(onDeathSounds[Random.Range(0, onDeathSounds.Length)]);
         Destroy(gameObject);
     }
