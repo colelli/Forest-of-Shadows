@@ -16,6 +16,7 @@ public class PlayerDebug : MonoBehaviour {
     private void Start() {
         if (!GameManager.Instance.IsInDebugMode()) {
             GetComponent<PlayerDebug>().enabled = false;
+            return;
         }
 
         parent = new GameObject("Debug");

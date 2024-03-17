@@ -10,6 +10,11 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
+# Unwanted Asset Commits
+/[Aa]ssets/PolygonNatureBiomes*
+/[Aa]ssets/Prefabs*
+/[Aa]ssets/Scenes*
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -52,6 +57,9 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+*.cs.meta
+*.asset.meta
+*.asset
 
 # Unity3D generated file on crash reports
 sysinfo.txt

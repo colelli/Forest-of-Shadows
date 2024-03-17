@@ -11,6 +11,7 @@ public class PropBase : MonoBehaviour, IInteractable {
     private void Start() {
         propCollider = GetComponent<SphereCollider>();
         propCollider.isTrigger = true;
+        transform.localScale *= 2f;
     }
 
     public PropSO GetPropSO() {

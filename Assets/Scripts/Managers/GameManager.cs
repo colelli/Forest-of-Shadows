@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 
     private GameState state;
     [SerializeField] private Player player;
+    [SerializeField] private Transform terrain;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
@@ -84,6 +85,10 @@ public class GameManager : MonoBehaviour {
 
     public Player GetPlayer() {
         return player;
+    }
+
+    public Transform GetTerrain() {
+        return terrain;
     }
 
 

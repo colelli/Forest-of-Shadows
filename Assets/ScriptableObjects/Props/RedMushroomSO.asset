@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5142c54c95338b9449dc1c7a5b37b867, type: 3}
   m_Name: RedMushroomSO
   m_EditorClassIdentifier: 
-  propPrefab: {fileID: 1578586201182242425, guid: 96fd3a2a33c81e3488e14f3160ec67ec,
+  propPrefab: {fileID: 4818205667915914869, guid: af0715fd82f39004689e26d04fc278ea,
     type: 3}
   propIcon: {fileID: 0}
   propName: Red Mushroom
