@@ -49,6 +49,10 @@ public class EnemySpawnManager : MonoBehaviour {
 
     }
 
+    public void ReducePowerLevel(EnemySO enemy) {
+        currentPowerLevel -= enemy.enemyPowerLevel;
+    }
+
     public bool CanSpawnNewEnemy() {
         return canSpawnNewEnemy;
     }

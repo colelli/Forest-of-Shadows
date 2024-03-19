@@ -97,7 +97,8 @@ public class Player : MonoBehaviour {
 
         if(sanity > 0) {
             sanity = Mathf.Clamp(sanity - GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff(), 0f, maxSanity);
-        } else { 
+        } else if(magicalCane.IsLightOn()) {
+            //Light is on -> turn it off
             BlowTorch();
         }
 

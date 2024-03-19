@@ -85,6 +85,7 @@ public abstract class Enemy : MonoBehaviour, IEnemy {
 
     protected void Death() {
         //PlayNoise(onDeathSounds[Random.Range(0, onDeathSounds.Length)]);
+        EnemySpawnManager.Instance.ReducePowerLevel(enemyType);
         Destroy(gameObject);
     }
 

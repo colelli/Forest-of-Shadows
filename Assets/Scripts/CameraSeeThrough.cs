@@ -8,48 +8,34 @@ public class CameraSeeThrough : MonoBehaviour {
     [Header("Camera Configs")]
     [SerializeField] private Transform target;
     [SerializeField] private LayerMask cameraMask;
-    [SerializeField] [Range(0f, 1f)] private float seeThroughOpacity;
 
-    private List<Transform> transformHiddenLastUpdate = new List<Transform>();
+    
+    private List<Tree> invisibleTreesLastUpdate = new List<Tree>();
 
 
     private void Update() {
         
-        foreach(Transform t in transformHiddenLastUpdate) {
-            t.gameObject.SetActive(true);
+        Debug.DrawLine(transform.position, target.position, Color.yellow);
+
+        foreach(Tree t in invisibleTreesLastUpdate) {
+            t.TogglePlaceHolderVisibility();
         }
-        transformHiddenLastUpdate.Clear();
+        invisibleTreesLastUpdate.Clear();
 
         Vector3 direction = (target.position - transform.position).normalized;
         float distance = (target.position - transform.position).magnitude;
-        if (Physics.BoxCast(transform.position, Vector3.one, direction, out RaycastHit hit, Quaternion.identity, distance, cameraMask)) {
-            Transform hitTransform = hit.transform;
-            transformHiddenLastUpdate.Add(hitTransform);
-            hitTransform.gameObject.SetActive(false);
-        }
+        RaycastHit[] hits = Physics.BoxCastAll(transform.position, Vector3.one, direction, Quaternion.identity, distance - 1.5f, cameraMask);
 
-    }
-
-    private bool GetCurrentLODRenderer(LODGroup lodGroup, out MeshRenderer renderer) {
-        renderer = null;
-        Transform lodTransform = lodGroup.transform;
-        foreach (Transform child in lodTransform) {
-            renderer = child.GetComponent<MeshRenderer>();
-            if (renderer != null && renderer.isVisible) {
-                return true;
+        if (hits.Length > 0) {
+            for(int i = 0; i < hits.Length; i++) {
+                //Get tree hit
+                Transform hitTransform = hits[i].transform;
+                Tree tree = hitTransform.GetComponentInParent<Tree>();
+                invisibleTreesLastUpdate.Add(tree);
+                tree.TogglePlaceHolderVisibility();
             }
         }
-        return false;
+
     }
 
-}
-
-public struct HiddenTransformInfo {
-    public readonly Transform transform;
-    public readonly MeshRenderer mr;
-
-    public HiddenTransformInfo(Transform transform, MeshRenderer mr) {
-        this.transform = transform;
-        this.mr = mr;
-    }
 }
