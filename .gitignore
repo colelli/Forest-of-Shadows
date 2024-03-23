@@ -12,8 +12,10 @@
 
 # Unwanted Asset Commits
 /[Aa]ssets/PolygonNatureBiomes*
+/[Aa]ssets/PolygonAncientEmpire*
 /[Aa]ssets/Prefabs*
 /[Aa]ssets/Scenes*
+/[Aa]ssets/UI*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
