@@ -12,10 +12,12 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Button quitButton;
 
     [SerializeField] private AlertUI alertUI;
+    [SerializeField] private GameObject loadingPlaceholder;
 
     private void Awake() {
         newGameButton.onClick.AddListener(() => {
             // newGame button clicked
+            loadingPlaceholder.SetActive(true);
             LoadingManager.Load(LoadingManager.Scene.LobbyScene);
         });
 

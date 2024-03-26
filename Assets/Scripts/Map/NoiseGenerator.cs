@@ -13,7 +13,7 @@ public static class NoiseGenerator {
         for(int x = 0; x < noiseMapTexture.width; x++) {
             for(int y = 0; y < noiseMapTexture.height; y++) {
                 (float xOffset, float yOffset) = (prng.Next(-DEFAULT_RANGE_BOUNDS, DEFAULT_RANGE_BOUNDS), prng.Next(-DEFAULT_RANGE_BOUNDS, DEFAULT_RANGE_BOUNDS));
-                float noiseValue = Mathf.PerlinNoise((float)x / mapSize.x * noiseScale, (float)y / mapSize.y * noiseScale);
+                float noiseValue = Mathf.PerlinNoise((float)x + xOffset / mapSize.x * noiseScale, (float)y + yOffset / mapSize.y * noiseScale);
                 noiseMapTexture.SetPixel(x, y, new Color(0, noiseValue, 0));
             }
         }

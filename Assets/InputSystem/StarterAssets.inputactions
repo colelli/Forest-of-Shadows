@@ -42,9 +42,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PickUp",
+                    "name": "Interact",
                     "type": "PassThrough",
-                    "id": "b18550c6-5ebb-4e42-9872-f2fdec9ab32d",
+                    "id": "c74ee5ae-a439-47e6-b84f-a4626cf64400",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -230,23 +230,23 @@
                 },
                 {
                     "name": "",
-                    "id": "69b18d92-0a0d-4cea-a32f-cba1112c728b",
+                    "id": "fcf8bee4-8ccf-42e6-9380-54e9a687e1f4",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "PickUp",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "2d155bef-52e8-4e49-9e01-6b3a621524ca",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "78f9bb0a-74f5-406d-935f-237c2d2b3a2b",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "PickUp",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
