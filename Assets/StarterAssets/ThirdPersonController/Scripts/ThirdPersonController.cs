@@ -20,6 +20,7 @@ namespace StarterAssets
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
+        private float _sprintStaminaCost = 20f;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -101,6 +102,7 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
+        private Player _player;
         private Animator _animator;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
@@ -139,6 +141,7 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
+            _player = GetComponent<Player>();
 #if ENABLE_INPUT_SYSTEM 
             _playerInput = GetComponent<PlayerInput>();
 #else
@@ -159,6 +162,7 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            HandleStamina();
         }
 
         private void LateUpdate()
@@ -214,7 +218,7 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed = IsRunning() ? SprintSpeed : MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -279,8 +283,17 @@ namespace StarterAssets
             }
         }
 
+        private void HandleStamina() {
+            if (IsRunning()) {
+                _player.DecreaseStamina(_sprintStaminaCost * Time.deltaTime);
+            } else {
+                _player.IncreaseStamina();
+            }
+        }
+
         private void JumpAndGravity()
         {
+
             if (Grounded)
             {
                 // reset the fall timeout timer
@@ -353,6 +366,10 @@ namespace StarterAssets
             if (lfAngle < -360f) lfAngle += 360f;
             if (lfAngle > 360f) lfAngle -= 360f;
             return Mathf.Clamp(lfAngle, lfMin, lfMax);
+        }
+
+        private bool IsRunning() {
+            return _input.sprint && _player.CanRun();
         }
 
         private void OnDrawGizmosSelected()

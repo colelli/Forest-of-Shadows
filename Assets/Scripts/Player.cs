@@ -16,14 +16,23 @@ public class Player : MonoBehaviour {
     private float resetInteractionTimer = 3f;
     private int interactionsWithLight;
 
+    [Header("Sanity System")]
     private float maxSanity = 100f;
     private float sanity;
+
+    [Header("Stamina System")]
+    private float maxStamina = 100f;
+    private float stamina;
+    private float defaultStaminaRegen = 10f;
+
+    [Header("Health System")]
     private const float maxHealth = 100f;
     private float currentHealth;
 
     private void Awake() {
         coroutineRunning = false;
         sanity = maxSanity;
+        stamina = maxStamina;
         currentHealth = maxHealth;
         interactionsWithLight = 0;
     }
@@ -102,6 +111,22 @@ public class Player : MonoBehaviour {
             BlowTorch();
         }
 
+    }
+
+    public void DecreaseStamina(float amount) {
+        stamina = Mathf.Clamp(stamina - amount, 0.0f, maxStamina);
+    }
+
+    public void IncreaseStamina() {
+        stamina = Mathf.Clamp(stamina + (defaultStaminaRegen * Time.deltaTime), 0.0f, maxStamina);
+    }
+
+    public bool CanRun() {
+        return stamina > 0.0f;
+    }
+
+    public bool HasEnoughStamina(float staminaNeeded) {
+        return stamina >= staminaNeeded;
     }
 
     private void BlowTorch() {

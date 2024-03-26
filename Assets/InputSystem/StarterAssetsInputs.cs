@@ -12,10 +12,12 @@ namespace StarterAssets
 		public event EventHandler OnInteractAction;
 
 		[Header("Character Input Values")]
+		private Player _player;
 		public Vector2 move;
 		public Vector2 look;
 		public bool jump;
-		public bool sprint;
+        private float _jumpStaminaCost = 10f;
+        public bool sprint;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -24,8 +26,12 @@ namespace StarterAssets
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
 
+        private void Start() {
+            _player = GetComponent<Player>();
+        }
+
 #if ENABLE_INPUT_SYSTEM
-		public void OnMove(InputValue value)
+        public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
 		}
@@ -67,7 +73,10 @@ namespace StarterAssets
 
 		public void JumpInput(bool newJumpState)
 		{
-			jump = newJumpState;
+			if (_player.HasEnoughStamina(_jumpStaminaCost)) {
+				jump = newJumpState;
+				_player.DecreaseStamina(_jumpStaminaCost);
+			}
 		}
 
 		public void SprintInput(bool newSprintState)
