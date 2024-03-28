@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(BoxCollider))]
 public class PropBase : MonoBehaviour, IInteractable {
 
     [SerializeField] private PropSO propSO;
-    private SphereCollider propCollider;
+    [SerializeField] [Min(1f)] private float localScale;
+    private BoxCollider propCollider;
 
     private void Start() {
-        propCollider = GetComponent<SphereCollider>();
+        propCollider = GetComponent<BoxCollider>();
         propCollider.isTrigger = true;
-        transform.localScale *= 2f;
+        transform.localScale *= localScale;
     }
 
     public PropSO GetPropSO() {

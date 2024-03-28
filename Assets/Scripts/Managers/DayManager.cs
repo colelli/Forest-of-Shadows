@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Rendering;
 
 public class DayManager { 
 
@@ -9,6 +11,8 @@ public class DayManager {
     public readonly DayNightState nightState = new DayNightState();
 
     public readonly GameDifficultyData gameDifficultyData;
+    private Light worldLight;
+    private Volume globalVolume;
 
     private const float DEFAULT_NEW_GAME_TIME = 0f;
     private const float DEFAULT_START_OF_DAY_TIME = 21600f;
@@ -18,6 +22,8 @@ public class DayManager {
 
     public DayManager() {
         gameDifficultyData = GameManager.Instance.GetCurrentDifficultyData();
+        worldLight = GameManager.Instance.GetLight();
+        globalVolume = GameManager.Instance.GetVolume();
         currentState = mornigState;
         currentState.EnterState(this);
     }
@@ -61,6 +67,14 @@ public class DayManager {
 
     public bool IsNight() {
         return currentState == nightState;
+    }
+
+    public Light GetLight() {
+        return worldLight;
+    }
+
+    public Volume GetVolume() {
+        return globalVolume;
     }
 
 }

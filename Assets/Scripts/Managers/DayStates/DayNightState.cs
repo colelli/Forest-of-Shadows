@@ -47,4 +47,8 @@ public class DayNightState : DayBaseState {
         currentSpawnTimer += Time.deltaTime;
     }
 
+    protected override void SetupLightAndVolume(DayManager context) {
+        //TO-DO
+    }
+
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour {
 
@@ -18,6 +20,8 @@ public class GameManager : MonoBehaviour {
     private GameState state;
     [SerializeField] private Player player;
     [SerializeField] private Transform terrain;
+    [SerializeField] private Light worldLight;
+    [SerializeField] private Volume globalVolume;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
@@ -89,6 +93,14 @@ public class GameManager : MonoBehaviour {
 
     public Transform GetTerrain() {
         return terrain;
+    }
+
+    public Light GetLight() {
+        return worldLight;
+    }
+
+    public Volume GetVolume() {
+        return globalVolume;
     }
 
 

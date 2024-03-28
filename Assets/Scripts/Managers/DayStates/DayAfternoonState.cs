@@ -21,4 +21,8 @@ public class DayAfternoonState : DayBaseState {
         }
     }
 
+    protected override void SetupLightAndVolume(DayManager context) {
+        //TO-DO
+    }
+
 }
