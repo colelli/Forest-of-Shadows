@@ -11,7 +11,7 @@ public class DayNightState : DayBaseState {
     private float debuffTimer;
 
     public override void EnterState(DayManager context) {
-        debuffTimer = context.gameDifficultyData.GetSanityDebuffInterval();
+        SetupLightAndVolume(context);
         currentSpawnTimer = 999f;
         Debug.Log($"[{context.GetType()}] >>> Night started");
     }
@@ -22,10 +22,8 @@ public class DayNightState : DayBaseState {
     /// </summary>
     /// <param name="context"></param>
     public override void UpdateState(DayManager context) {
-
         ReducePlayerSanity(context);
         TrySpawnEnemy(context);
-
     }
 
     private void ReducePlayerSanity(DayManager context) {
@@ -48,7 +46,14 @@ public class DayNightState : DayBaseState {
     }
 
     protected override void SetupLightAndVolume(DayManager context) {
-        //TO-DO
+        // Light setup
+        context.sceneLight.color = context.nightDayGraphicsData.GetLightColour();
+        context.sceneLight.colorTemperature = context.nightDayGraphicsData.GetLightTemperature();
+        context.sceneLight.intensity = context.nightDayGraphicsData.GetLightIntensity();
+
+        // Volume setup
+        context.colorAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(context.nightDayGraphicsData.GetVolumeExposure()));
+        context.colorAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(context.nightDayGraphicsData.GetVolumeTint()));
     }
 
 }

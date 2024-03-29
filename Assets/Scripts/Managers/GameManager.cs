@@ -21,11 +21,17 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Player player;
     [SerializeField] private Transform terrain;
     [SerializeField] private Light worldLight;
-    [SerializeField] private Volume globalVolume;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
     private string currentTime;
+
+    [Header("Graphics")]
+    [SerializeField] private Volume globalVolume;
+    [Space(10)]
+    [SerializeField] private GameDayGraphicsData morningGraphicsData;
+    [SerializeField] private GameDayGraphicsData afternoonGraphicsData;
+    [SerializeField] private GameDayGraphicsData nightGraphicsData;
 
     private void Awake() {
         //We check if there is already a Singleton of GameManager
@@ -103,6 +109,18 @@ public class GameManager : MonoBehaviour {
         return globalVolume;
     }
 
+    public GameDayGraphicsData GetMorningGraphicsData() {
+        return morningGraphicsData;
+    }
+
+    public GameDayGraphicsData GetAfternoonGraphicsData() {
+        return afternoonGraphicsData;
+    }
+
+    public GameDayGraphicsData GetNightGraphicsData() {
+        return nightGraphicsData;
+    }
+
 
 }
 
@@ -148,4 +166,41 @@ public struct GameDifficultyData {
         return sanityDebuffInterval;
     }
 
+}
+
+[System.Serializable]
+public struct GameDayGraphicsData {
+    [SerializeField] private Color colour;
+    [SerializeField][Range(1500, 20000)] private float lightTemperature;
+    [SerializeField][Min(1)] private float lightIntensity;
+    [SerializeField] private Color volumeTint;
+    [SerializeField] private float volumeExposure;
+
+    public GameDayGraphicsData(Color colour, float lightTemperature, float lightIntensity, Color volumeTint, float volumeExposure = 0f) {
+        this.colour = colour;
+        this.lightTemperature = lightTemperature;
+        this.lightIntensity = lightIntensity;
+        this.volumeTint = volumeTint;
+        this.volumeExposure = volumeExposure;
+    }
+
+    public Color GetLightColour() {
+        return colour;
+    }
+
+    public float GetLightTemperature() {
+        return lightTemperature;
+    }
+
+    public float GetLightIntensity() {
+        return lightIntensity;
+    }
+
+    public Color GetVolumeTint() {
+        return volumeTint;
+    }
+
+    public float GetVolumeExposure() {
+        return volumeExposure;
+    }
 }

@@ -11,22 +11,15 @@ public class DayMorningState : DayBaseState {
 
     private const float AFTERNOON_THRESHOLD = 28800f; //8-Hours in seconds from start-of-day
 
-    private Color startOfMorningColour = new Color(255f, 235f, 208f);
-    private Color endOfMorningColour = new Color(255f, 255f, 230f);
-
-    private const float startOfMorningTemperature = 3000f;
-    private const float endOfMorningTemperature = 5500f;
-
-    private const float startOfMorningIntensity = 3f;
-    private const float endOfMorningIntensity = 7f;
-
     public override void EnterState(DayManager context) {
+        SetupLightAndVolume(context);
         context.StartDay();
-        //SetupLightAndVolume(context);
+
         Debug.Log($"[{context.GetType()}] >>> Morning started");
     }
 
     public override void UpdateState(DayManager context) {
+        UpdateLightAndVolume(context);
         if (context.GetCurrentGameTime() >= AFTERNOON_THRESHOLD) {
             //8-hours passed -> switch to afternoon
             context.SwitchState(context.afternoonState);
@@ -34,26 +27,27 @@ public class DayMorningState : DayBaseState {
     }
 
     protected override void SetupLightAndVolume(DayManager context) {
-        //light setup
-        Light light = context.GetLight();
-        light.colorTemperature = startOfMorningTemperature;
-        light.color = startOfMorningColour;
-        light.intensity = startOfMorningIntensity;
-        light.SetLightDirty();
+        // Light setup
+        context.sceneLight.color = context.morningDayGraphicsData.GetLightColour();
+        context.sceneLight.colorTemperature = context.morningDayGraphicsData.GetLightTemperature();
+        context.sceneLight.intensity = context.morningDayGraphicsData.GetLightIntensity();
 
-        //volume setup
-        /*
-        Volume volume = context.GetVolume();
-        Debug.Log(volume);
-        if(volume.profile.TryGet<ColorAdjustments>(out ColorAdjustments colourAdjustments)) {
-            Debug.Log(colourAdjustments);
-            colourAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(startOfMorningColour));
-            colourAdjustments.saturation.SetValue(new UnityEngine.Rendering.FloatParameter(10f));
-            colourAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(0.5f));
-        }
-        */
+        // Volume setup
+        context.colorAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(context.morningDayGraphicsData.GetVolumeExposure()));
+        context.colorAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(context.morningDayGraphicsData.GetVolumeTint()));
+    }
+
+    protected void UpdateLightAndVolume(DayManager context) {
+        float ratio = context.GetCurrentGameTime() / AFTERNOON_THRESHOLD;
+
+        // Light update
+        context.sceneLight.color = Color.Lerp(context.morningDayGraphicsData.GetLightColour(), context.afternoonDayGraphicsData.GetLightColour(), ratio);
+        context.sceneLight.colorTemperature = Mathf.Lerp(context.morningDayGraphicsData.GetLightTemperature(), context.afternoonDayGraphicsData.GetLightTemperature(), ratio);
+        context.sceneLight.intensity = Mathf.Lerp(context.morningDayGraphicsData.GetLightIntensity(), context.afternoonDayGraphicsData.GetLightIntensity(), ratio);
+
+        // Volume update
+        context.colorAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(Mathf.Lerp(context.morningDayGraphicsData.GetVolumeExposure(), context.afternoonDayGraphicsData.GetVolumeExposure(), ratio)));
+        context.colorAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(Color.Lerp(context.morningDayGraphicsData.GetVolumeTint(), context.afternoonDayGraphicsData.GetVolumeTint(), ratio)));
     }
 
 }
-
-// startValue + ( ((currentTime - startTime) * (maxValue - startValue)) / maxTime - startTime )

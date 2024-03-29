@@ -2,17 +2,22 @@ using System;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class DayManager { 
 
     private DayBaseState currentState;
     public readonly DayMorningState mornigState = new DayMorningState();
+    public readonly GameDayGraphicsData morningDayGraphicsData;
     public readonly DayAfternoonState afternoonState = new DayAfternoonState();
+    public readonly GameDayGraphicsData afternoonDayGraphicsData;
     public readonly DayNightState nightState = new DayNightState();
+    public readonly GameDayGraphicsData nightDayGraphicsData;
 
     public readonly GameDifficultyData gameDifficultyData;
-    private Light worldLight;
-    private Volume globalVolume;
+    public readonly Light sceneLight;
+    public readonly Volume globalVolume;
+    public readonly ColorAdjustments colorAdjustments;
 
     private const float DEFAULT_NEW_GAME_TIME = 0f;
     private const float DEFAULT_START_OF_DAY_TIME = 21600f;
@@ -21,9 +26,17 @@ public class DayManager {
     private float gameTimeMultiplier;
 
     public DayManager() {
+        //Get References
         gameDifficultyData = GameManager.Instance.GetCurrentDifficultyData();
-        worldLight = GameManager.Instance.GetLight();
+        morningDayGraphicsData = GameManager.Instance.GetMorningGraphicsData();
+        afternoonDayGraphicsData = GameManager.Instance.GetAfternoonGraphicsData();
+        nightDayGraphicsData = GameManager.Instance.GetNightGraphicsData();
+        sceneLight = GameManager.Instance.GetLight();
         globalVolume = GameManager.Instance.GetVolume();
+        if(globalVolume.profile.TryGet<ColorAdjustments>(out ColorAdjustments data)) {
+            colorAdjustments = data;
+        }
+
         currentState = mornigState;
         currentState.EnterState(this);
     }
@@ -67,14 +80,6 @@ public class DayManager {
 
     public bool IsNight() {
         return currentState == nightState;
-    }
-
-    public Light GetLight() {
-        return worldLight;
-    }
-
-    public Volume GetVolume() {
-        return globalVolume;
     }
 
 }
