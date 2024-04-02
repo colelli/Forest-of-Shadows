@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AlertUI : MonoBehaviour {
+public class AlertUI : MonoBehaviour, IMenuUI {
 
     [SerializeField] private Image bgPanel;
     [SerializeField] private TextMeshProUGUI displayedInfo;

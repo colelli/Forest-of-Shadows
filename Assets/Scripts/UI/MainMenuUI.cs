@@ -12,7 +12,10 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Button quitButton;
 
     [SerializeField] private AlertUI alertUI;
+    [SerializeField] private SettingsUI settingsPanel;
     [SerializeField] private GameObject loadingPlaceholder;
+
+    private IMenuUI currentShownSideMenuPanel;
 
     private void Awake() {
         newGameButton.onClick.AddListener(() => {
@@ -27,13 +30,17 @@ public class MainMenuUI : MonoBehaviour {
 
         settingsButton.onClick.AddListener(() => {
             // settings button clicked
+            settingsPanel.Show();
+            currentShownSideMenuPanel = settingsPanel;
         });
 
         quitButton.onClick.AddListener(() => {
             // quitGame button clicked
+            currentShownSideMenuPanel = alertUI;
             alertUI.SetDisplayInfo("Are you sure you want to quit?");
             alertUI.SetCancelButtonEvent(() => {
                 alertUI.Hide();
+                currentShownSideMenuPanel = null;
             });
             alertUI.SetConfirmButtonEvent(() => {
 #if UNITY_EDITOR
@@ -44,6 +51,19 @@ public class MainMenuUI : MonoBehaviour {
             });
             alertUI.Show();
         });
+    }
+
+    private void Update() {
+
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            if(currentShownSideMenuPanel != null) {
+                //Side panel showing -> Hide it and reset ref
+
+                currentShownSideMenuPanel.Hide();
+                currentShownSideMenuPanel = null;
+            }
+        }
+
     }
 
 }
