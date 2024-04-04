@@ -24,7 +24,7 @@ public class PropSpawnManager : MonoBehaviour {
     }
 
     private void Start() {
-        MeshRenderer mr = GameManager.Instance.GetTerrain().GetComponent<MeshRenderer>();
+        MeshRenderer mr = MapGenerator.Instance.GetTerrain().GetComponent<MeshRenderer>();
         mapSize = new Vector2(mr.bounds.size.x, mr.bounds.size.z);
         mapOffset = new Vector3(mapSize.x / 2f, 0f, mapSize.y / 2f);
         SpawnPropInRandomLocation();

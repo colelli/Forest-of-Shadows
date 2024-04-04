@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
     public static DayManager DayManager { get; private set; }
 
-    private enum GameState {
+    public enum GameState {
         WaitingToStart,
         GamePlaying,
         GamePaused,
@@ -46,7 +46,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        state = GameState.GamePlaying;
+        ChangeState(GameState.WaitingToStart);
+        //ChangeState(GameState.GamePlaying);
     }
 
     private void Update() {
@@ -61,6 +62,8 @@ public class GameManager : MonoBehaviour {
                 if(DayManager == null) {
                     //We start a new Day
                     Debug.Log($"[{this.name}] >>> Game Started\n");
+                    //GetWorldReferences();
+                    Instantiate(player, Vector3.zero, Quaternion.identity);
                     DayManager = new DayManager();
                 } else {
                     DayManager.UpdateCurrentState();
@@ -76,6 +79,16 @@ public class GameManager : MonoBehaviour {
 
         }
 
+    }
+
+    private void GetWorldReferences() {
+        //terrain = GameObject.Find("FoS_Terrain").transform;
+        worldLight = GameObject.Find("FoS_Directional Light").GetComponent<Light>();
+        //globalVolume = GameObject.Find("FoS_GlobalVolume").GetComponent<Volume>();
+    }
+
+    public void ChangeState(GameState state) {
+        this.state = state;
     }
 
     public GameDifficultyData GetCurrentDifficultyData() {

@@ -18,6 +18,10 @@ public static class LoadingManager {
 
     public static void LoadingManagerCallback() {
         SceneManager.LoadScene(targetScene.ToString());
+
+        if(targetScene.ToString() == Scene.GameScene.ToString()) {
+            GameManager.Instance.ChangeState(GameManager.GameState.GamePlaying);
+        }
     }
 
 }

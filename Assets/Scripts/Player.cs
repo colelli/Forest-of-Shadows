@@ -29,6 +29,8 @@ public class Player : MonoBehaviour {
     private const float maxHealth = 100f;
     private float currentHealth;
 
+    [SerializeField] private GameObject fogRing;
+
     private void Awake() {
         coroutineRunning = false;
         sanity = maxSanity;
@@ -41,6 +43,8 @@ public class Player : MonoBehaviour {
         magicalCane = GetComponent<MagicalCane>();
         inputs = GetComponent<StarterAssetsInputs>();
         inputs.OnInteractAction += Inputs_OnInteractAction;
+        
+        UpdateFogRingStatus();
     }
 
     private void Inputs_OnInteractAction(object sender, System.EventArgs e) {
@@ -129,6 +133,10 @@ public class Player : MonoBehaviour {
         return stamina >= staminaNeeded;
     }
 
+    private void UpdateFogRingStatus() {
+        fogRing.SetActive(GameManager.Instance.IsGamePlaying());
+    }
+
     private void BlowTorch() {
         magicalCane.ToggleLight();
     }
@@ -151,6 +159,7 @@ public class Player : MonoBehaviour {
     
     private void OnTriggerEnter(Collider other) {
         if(other.TryGetComponent<IInteractable>(out IInteractable prop)) {
+            Debug.Log($"[{this.name}] >>> Entered {prop} interaction range");
             interactTarget = prop;
         }
     }
@@ -158,6 +167,7 @@ public class Player : MonoBehaviour {
     private void OnTriggerExit(Collider other) {
         if(other.TryGetComponent<IInteractable>(out IInteractable prop)) {
             if(interactTarget == prop) {
+                Debug.Log($"[{this.name}] >>> Exited {prop} interaction range");
                 interactTarget = null;
             }
         }

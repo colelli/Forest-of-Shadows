@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class MapGenerator : MonoBehaviour {
 
+    public static MapGenerator Instance { get; private set; }
+
     private enum GenerationMode {
         TextureGeneration,
         ObjectsGeneration
@@ -36,6 +38,16 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField] private float decorNoiseScale;
     [SerializeField] private LayerMask decorationMask;
 
+    private void Awake() {
+        //We check if there is already a Singleton of MapGenerator
+        if (Instance != null && Instance != this) {
+            Destroy(this);
+            throw new System.Exception($"[{this.name}] >>> An Instance of this Singleton already exists!");
+        } else {
+            //There are not instances
+            Instance = this;
+        }
+    }
 
     public void DrawTreeMap() {
         MeshRenderer mr = map.GetComponent<MeshRenderer>();
@@ -131,6 +143,10 @@ public class MapGenerator : MonoBehaviour {
 
     public bool CanAutoUpdate() {
         return autoUpdate;
+    }
+
+    public Transform GetTerrain() {
+        return map;
     }
 
 }

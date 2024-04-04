@@ -69,3 +69,14 @@ public class SettingsData {
     }
 
 }
+
+[System.Serializable]
+public class GameSaveData {
+    public int level;
+    public int score;
+
+    public GameSaveData(int level, int score) {
+        this.level = level;
+        this.score = score;
+    }
+}
