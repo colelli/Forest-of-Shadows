@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour {
     private GameState state;
 
     [SerializeField] private Player player;
-    [SerializeField] private Transform terrain;
-    [SerializeField] private Light worldLight;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
@@ -41,8 +39,8 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         Cursor.visible = false;
-        //ChangeState(GameState.WaitingToStart);
-        ChangeState(GameState.GamePlaying);
+        ChangeState(GameState.WaitingToStart);
+        //ChangeState(GameState.GamePlaying);
     }
 
     private void Update() {
@@ -88,14 +86,6 @@ public class GameManager : MonoBehaviour {
 
     public Player GetPlayer() {
         return player;
-    }
-
-    public Transform GetTerrain() {
-        return terrain;
-    }
-
-    public Light GetLight() {
-        return worldLight;
     }
 
 }

@@ -35,22 +35,9 @@ public class PropSpawnManager : MonoBehaviour {
         foreach(PropSO propSO in DeliveryManager.Instance.GetDeliverablesList()) {
             bool propSpawned = false;
             do {
-                propSpawned = InstantiateProp(GetRandomLocation(), propSO.propPrefab, mask, parent);
+                propSpawned = InstantiateProp(Utils.GetRandomLocation(mapSize, mapOffset), propSO.propPrefab, mask, parent);
             } while (!propSpawned);
         }
-    }
-
-    private Vector3 GetRandomLocation() {
-        Vector3 randomLocation = new Vector3(Random.Range(0f, mapSize.x), 0f, Random.Range(0f, mapSize.y)) - mapOffset;
-
-        // Direction where to cast the ray
-        Vector3 displacement = (randomLocation + Vector3.down) - randomLocation;
-
-        if (Physics.Raycast(randomLocation, displacement.normalized, out RaycastHit hit)) {
-            randomLocation.y = hit.point.y;
-        }
-
-        return randomLocation;
     }
 
     private bool InstantiateProp(Vector3 spawnLocation, Transform prefab, LayerMask mask, Transform parent) {

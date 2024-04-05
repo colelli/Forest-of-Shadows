@@ -39,4 +39,17 @@ public static class Utils {
 
     }
 
+    public static Vector3 GetRandomLocation(Vector2 mapSize, Vector3 mapOffset) {
+        Vector3 randomLocation = new Vector3(Random.Range(0f, mapSize.x), 0f, Random.Range(0f, mapSize.y)) - mapOffset;
+
+        // Direction where to cast the ray
+        Vector3 displacement = (randomLocation + Vector3.down) - randomLocation;
+
+        if (Physics.Raycast(randomLocation, displacement.normalized, out RaycastHit hit)) {
+            randomLocation.y = hit.point.y;
+        }
+
+        return randomLocation;
+    }
+
 }
