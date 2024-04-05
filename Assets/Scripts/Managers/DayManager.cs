@@ -4,20 +4,25 @@ using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class DayManager { 
+public class DayManager : MonoBehaviour {
+
+    public static DayManager Instance { get; private set; }
+
+    [Header("Graphics References")]
+    [SerializeField] private Light globalLight;
+    [SerializeField] private Volume globalVolume;
+    [Space(10)]
+    [SerializeField] private GameDayGraphicsData morningGraphicsData;
+    [SerializeField] private GameDayGraphicsData afternoonGraphicsData;
+    [SerializeField] private GameDayGraphicsData nightGraphicsData;
 
     private DayBaseState currentState;
     public readonly DayMorningState mornigState = new DayMorningState();
-    public readonly GameDayGraphicsData morningDayGraphicsData;
     public readonly DayAfternoonState afternoonState = new DayAfternoonState();
-    public readonly GameDayGraphicsData afternoonDayGraphicsData;
     public readonly DayNightState nightState = new DayNightState();
-    public readonly GameDayGraphicsData nightDayGraphicsData;
 
-    public readonly GameDifficultyData gameDifficultyData;
-    public readonly Light sceneLight;
-    public readonly Volume globalVolume;
-    public readonly ColorAdjustments colorAdjustments;
+    public GameDifficultyData gameDifficultyData;
+    private ColorAdjustments colorAdjustments;
 
     private const float DEFAULT_NEW_GAME_TIME = 0f;
     private const float DEFAULT_START_OF_DAY_TIME = 21600f;
@@ -25,18 +30,23 @@ public class DayManager {
     private float gamePlayingTime;
     private float gameTimeMultiplier;
 
-    public DayManager() {
+    private void Awake() {
+        //We check if there is already a Singleton of DayManager
+        if (Instance != null && Instance != this) {
+            Destroy(this);
+            throw new System.Exception($"[{this.name}] >>> An Instance of this Singleton already exists!");
+        } else {
+            //There are not instances
+            Instance = this;
+        }
+    }
+
+    private void Start() {
         //Get References
         gameDifficultyData = GameManager.Instance.GetCurrentDifficultyData();
-        morningDayGraphicsData = GameManager.Instance.GetMorningGraphicsData();
-        afternoonDayGraphicsData = GameManager.Instance.GetAfternoonGraphicsData();
-        nightDayGraphicsData = GameManager.Instance.GetNightGraphicsData();
-        sceneLight = GameManager.Instance.GetLight();
-        globalVolume = GameManager.Instance.GetVolume();
-        if(globalVolume.profile.TryGet<ColorAdjustments>(out ColorAdjustments data)) {
+        if (globalVolume.profile.TryGet<ColorAdjustments>(out ColorAdjustments data)) {
             colorAdjustments = data;
         }
-
         currentState = mornigState;
         currentState.EnterState(this);
     }
@@ -82,5 +92,50 @@ public class DayManager {
         return currentState == nightState;
     }
 
+    public Light GetGlobalLight() {
+        return globalLight;
+    }
+
+    public ColorAdjustments GetColorAdjustments() { return colorAdjustments; }
+    public GameDayGraphicsData GetMorningGraphicsData() { return morningGraphicsData; }
+    public GameDayGraphicsData GetAfternoonGraphicsData() { return afternoonGraphicsData; }
+    public GameDayGraphicsData GetNightGraphicsData() { return nightGraphicsData; }
+
 }
 
+[System.Serializable]
+public struct GameDayGraphicsData {
+    [SerializeField] private Color colour;
+    [SerializeField][Range(1500, 20000)] private float lightTemperature;
+    [SerializeField][Min(1)] private float lightIntensity;
+    [SerializeField] private Color volumeTint;
+    [SerializeField] private float volumeExposure;
+
+    public GameDayGraphicsData(Color colour, float lightTemperature, float lightIntensity, Color volumeTint, float volumeExposure = 0f) {
+        this.colour = colour;
+        this.lightTemperature = lightTemperature;
+        this.lightIntensity = lightIntensity;
+        this.volumeTint = volumeTint;
+        this.volumeExposure = volumeExposure;
+    }
+
+    public Color GetLightColour() {
+        return colour;
+    }
+
+    public float GetLightTemperature() {
+        return lightTemperature;
+    }
+
+    public float GetLightIntensity() {
+        return lightIntensity;
+    }
+
+    public Color GetVolumeTint() {
+        return volumeTint;
+    }
+
+    public float GetVolumeExposure() {
+        return volumeExposure;
+    }
+}

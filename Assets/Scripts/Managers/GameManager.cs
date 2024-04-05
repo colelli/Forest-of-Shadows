@@ -8,7 +8,6 @@ using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance { get; private set; }
-    public static DayManager DayManager { get; private set; }
 
     public enum GameState {
         WaitingToStart,
@@ -18,20 +17,15 @@ public class GameManager : MonoBehaviour {
     }
 
     private GameState state;
+
     [SerializeField] private Player player;
     [SerializeField] private Transform terrain;
     [SerializeField] private Light worldLight;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
-    private string currentTime;
 
-    [Header("Graphics")]
-    [SerializeField] private Volume globalVolume;
-    [Space(10)]
-    [SerializeField] private GameDayGraphicsData morningGraphicsData;
-    [SerializeField] private GameDayGraphicsData afternoonGraphicsData;
-    [SerializeField] private GameDayGraphicsData nightGraphicsData;
+    private string currentTime;
 
     private void Awake() {
         //We check if there is already a Singleton of GameManager
@@ -46,8 +40,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
-        ChangeState(GameState.WaitingToStart);
-        //ChangeState(GameState.GamePlaying);
+        Cursor.visible = false;
+        //ChangeState(GameState.WaitingToStart);
+        ChangeState(GameState.GamePlaying);
     }
 
     private void Update() {
@@ -58,33 +53,18 @@ public class GameManager : MonoBehaviour {
                 //player is currently inside the cabin or still hasn't started the day
                 break; 
             case GameState.GamePlaying:
-
-                if(DayManager == null) {
-                    //We start a new Day
-                    Debug.Log($"[{this.name}] >>> Game Started\n");
-                    //GetWorldReferences();
-                    Instantiate(player, Vector3.zero, Quaternion.identity);
-                    DayManager = new DayManager();
-                } else {
-                    DayManager.UpdateCurrentState();
-                    currentTime = DayManager.GetCurrentGameTimeInHHMMSS();
-                }
-
+                Debug.Log($"[{this.name}] >>> Game Started\n");
+                DayManager.Instance.UpdateCurrentState();
+                currentTime = DayManager.Instance.GetCurrentGameTimeInHHMMSS();
                 break;
             case GameState.GamePaused:
-                DayManager.PauseDay();
+                DayManager.Instance.PauseDay();
                 break;
             case GameState.GameOver:
                 break;
 
         }
 
-    }
-
-    private void GetWorldReferences() {
-        //terrain = GameObject.Find("FoS_Terrain").transform;
-        worldLight = GameObject.Find("FoS_Directional Light").GetComponent<Light>();
-        //globalVolume = GameObject.Find("FoS_GlobalVolume").GetComponent<Volume>();
     }
 
     public void ChangeState(GameState state) {
@@ -117,23 +97,6 @@ public class GameManager : MonoBehaviour {
     public Light GetLight() {
         return worldLight;
     }
-
-    public Volume GetVolume() {
-        return globalVolume;
-    }
-
-    public GameDayGraphicsData GetMorningGraphicsData() {
-        return morningGraphicsData;
-    }
-
-    public GameDayGraphicsData GetAfternoonGraphicsData() {
-        return afternoonGraphicsData;
-    }
-
-    public GameDayGraphicsData GetNightGraphicsData() {
-        return nightGraphicsData;
-    }
-
 
 }
 
@@ -179,41 +142,4 @@ public struct GameDifficultyData {
         return sanityDebuffInterval;
     }
 
-}
-
-[System.Serializable]
-public struct GameDayGraphicsData {
-    [SerializeField] private Color colour;
-    [SerializeField][Range(1500, 20000)] private float lightTemperature;
-    [SerializeField][Min(1)] private float lightIntensity;
-    [SerializeField] private Color volumeTint;
-    [SerializeField] private float volumeExposure;
-
-    public GameDayGraphicsData(Color colour, float lightTemperature, float lightIntensity, Color volumeTint, float volumeExposure = 0f) {
-        this.colour = colour;
-        this.lightTemperature = lightTemperature;
-        this.lightIntensity = lightIntensity;
-        this.volumeTint = volumeTint;
-        this.volumeExposure = volumeExposure;
-    }
-
-    public Color GetLightColour() {
-        return colour;
-    }
-
-    public float GetLightTemperature() {
-        return lightTemperature;
-    }
-
-    public float GetLightIntensity() {
-        return lightIntensity;
-    }
-
-    public Color GetVolumeTint() {
-        return volumeTint;
-    }
-
-    public float GetVolumeExposure() {
-        return volumeExposure;
-    }
 }

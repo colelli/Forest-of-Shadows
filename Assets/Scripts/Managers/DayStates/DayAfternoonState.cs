@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 /// <summary>
 /// Afternoon State goes from 14:00 to 20:00 where we switch to Night State
@@ -25,26 +26,33 @@ public class DayAfternoonState : DayBaseState {
 
     protected override void SetupLightAndVolume(DayManager context) {
         // Light setup
-        context.sceneLight.color = context.afternoonDayGraphicsData.GetLightColour();
-        context.sceneLight.colorTemperature = context.afternoonDayGraphicsData.GetLightTemperature();
-        context.sceneLight.intensity = context.afternoonDayGraphicsData.GetLightIntensity();
+        Light light = context.GetGlobalLight();
+        GameDayGraphicsData afternoonGraphicsData = context.GetAfternoonGraphicsData();
+        light.color = afternoonGraphicsData.GetLightColour();
+        light.colorTemperature = afternoonGraphicsData.GetLightTemperature();
+        light.intensity = afternoonGraphicsData.GetLightIntensity();
 
         // Volume setup
-        context.colorAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(context.afternoonDayGraphicsData.GetVolumeExposure()));
-        context.colorAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(context.afternoonDayGraphicsData.GetVolumeTint()));
+        ColorAdjustments colourAdjustments = context.GetColorAdjustments();
+        colourAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(afternoonGraphicsData.GetVolumeExposure()));
+        colourAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(afternoonGraphicsData.GetVolumeTint()));
     }
 
     private void UpdateLightAndVolume(DayManager context) {
         float ratio = (context.GetCurrentGameTime() - TIME_ELAPSED_TILL_START_OF_STATE) / (NIGHT_THRESHOLD - TIME_ELAPSED_TILL_START_OF_STATE);
 
         // Light update
-        context.sceneLight.color = Color.Lerp(context.afternoonDayGraphicsData.GetLightColour(), context.nightDayGraphicsData.GetLightColour(), ratio);
-        context.sceneLight.colorTemperature = Mathf.Lerp(context.afternoonDayGraphicsData.GetLightTemperature(), context.nightDayGraphicsData.GetLightTemperature(), ratio);
-        context.sceneLight.intensity = Mathf.Lerp(context.afternoonDayGraphicsData.GetLightIntensity(), context.nightDayGraphicsData.GetLightIntensity(), ratio);
+        Light light = context.GetGlobalLight();
+        GameDayGraphicsData afternoonGraphicsData = context.GetAfternoonGraphicsData();
+        GameDayGraphicsData nightGraphicsData = context.GetNightGraphicsData();
+        light.color = Color.Lerp(afternoonGraphicsData.GetLightColour(), nightGraphicsData.GetLightColour(), ratio);
+        light.colorTemperature = Mathf.Lerp(afternoonGraphicsData.GetLightTemperature(), nightGraphicsData.GetLightTemperature(), ratio);
+        light.intensity = Mathf.Lerp(afternoonGraphicsData.GetLightIntensity(), nightGraphicsData.GetLightIntensity(), ratio);
 
         // Volume update
-        context.colorAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(Mathf.Lerp(context.afternoonDayGraphicsData.GetVolumeExposure(), context.nightDayGraphicsData.GetVolumeExposure(), ratio)));
-        context.colorAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(Color.Lerp(context.afternoonDayGraphicsData.GetVolumeTint(), context.nightDayGraphicsData.GetVolumeTint(), ratio)));
+        ColorAdjustments colourAdjustments = context.GetColorAdjustments();
+        colourAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(Mathf.Lerp(afternoonGraphicsData.GetVolumeExposure(), nightGraphicsData.GetVolumeExposure(), ratio)));
+        colourAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(Color.Lerp(afternoonGraphicsData.GetVolumeTint(), nightGraphicsData.GetVolumeTint(), ratio)));
     }
 
 }

@@ -40,8 +40,9 @@ public class Player : MonoBehaviour {
     }
 
     private void Start() {
-        magicalCane = GetComponent<MagicalCane>();
-        inputs = GetComponent<StarterAssetsInputs>();
+        magicalCane = gameObject.GetComponent<MagicalCane>();
+        Debug.Log(magicalCane);
+        inputs = gameObject.GetComponent<StarterAssetsInputs>();
         inputs.OnInteractAction += Inputs_OnInteractAction;
         
         UpdateFogRingStatus();

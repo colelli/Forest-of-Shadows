@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 /// <summary>
 /// Night State goes from 20:00 until the player either goes back to the "base" or fails the surviving the night
@@ -29,7 +30,7 @@ public class DayNightState : DayBaseState {
     private void ReducePlayerSanity(DayManager context) {
         if(debuffTimer <= 0) {
             //We can apply the debuff
-            GameManager.Instance.GetPlayer()?.DrainSanity();
+            PlayerSpawnManager.GetInGamePlayer()?.DrainSanity();
             debuffTimer = context.gameDifficultyData.GetSanityDebuffInterval();
         }
         debuffTimer -= Time.deltaTime;
@@ -47,13 +48,16 @@ public class DayNightState : DayBaseState {
 
     protected override void SetupLightAndVolume(DayManager context) {
         // Light setup
-        context.sceneLight.color = context.nightDayGraphicsData.GetLightColour();
-        context.sceneLight.colorTemperature = context.nightDayGraphicsData.GetLightTemperature();
-        context.sceneLight.intensity = context.nightDayGraphicsData.GetLightIntensity();
+        Light light = context.GetGlobalLight();
+        GameDayGraphicsData nightGraphicsData = context.GetNightGraphicsData();
+        light.color = nightGraphicsData.GetLightColour();
+        light.colorTemperature = nightGraphicsData.GetLightTemperature();
+        light.intensity = nightGraphicsData.GetLightIntensity();
 
         // Volume setup
-        context.colorAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(context.nightDayGraphicsData.GetVolumeExposure()));
-        context.colorAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(context.nightDayGraphicsData.GetVolumeTint()));
+        ColorAdjustments colourAdjustments = context.GetColorAdjustments();
+        colourAdjustments.postExposure.SetValue(new UnityEngine.Rendering.FloatParameter(nightGraphicsData.GetVolumeExposure()));
+        colourAdjustments.colorFilter.SetValue(new UnityEngine.Rendering.ColorParameter(nightGraphicsData.GetVolumeTint()));
     }
 
 }
