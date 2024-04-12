@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerSpawnManager : MonoBehaviour {
 
     [SerializeField] private Transform structurePrefab;
+    [SerializeField] private Player playerPrefab;
     private Vector2 mapSize;
     private Vector3 mapOffset;
     private static Player inGamePlayer;
@@ -35,7 +36,8 @@ public class PlayerSpawnManager : MonoBehaviour {
         SpawnPoint spawnPoint = inGameStructure.GetComponent<SpawnPoint>();
         Vector3 spawnPosition = spawnPoint.GetSpawnPointPosition();
         Quaternion spawnRotation = spawnPoint.GetSpawnPointRotation();
-        inGamePlayer = Instantiate(GameManager.Instance.GetPlayer(), spawnPosition, spawnRotation);
+        inGamePlayer = Instantiate(playerPrefab, spawnPosition, spawnRotation);
+        GameManager.Instance.SetPlayerOnSpawn(inGamePlayer);
     }
 
     private void PlaceSpawnStructure() {

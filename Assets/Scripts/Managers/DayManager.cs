@@ -96,6 +96,10 @@ public class DayManager : MonoBehaviour {
         return globalLight;
     }
 
+    public Volume GetGlobalVolume() {
+        return globalVolume;
+    }
+
     public ColorAdjustments GetColorAdjustments() { return colorAdjustments; }
     public GameDayGraphicsData GetMorningGraphicsData() { return morningGraphicsData; }
     public GameDayGraphicsData GetAfternoonGraphicsData() { return afternoonGraphicsData; }

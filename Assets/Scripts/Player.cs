@@ -17,16 +17,17 @@ public class Player : MonoBehaviour {
     private int interactionsWithLight;
 
     [Header("Sanity System")]
-    private float maxSanity = 100f;
+    private const float maxSanity = 100f;
+    private float currentMaxSanity = 100f;
     private float sanity;
 
     [Header("Stamina System")]
-    private float maxStamina = 100f;
+    public readonly float maxStamina = 100f;
     private float stamina;
     private float defaultStaminaRegen = 10f;
 
     [Header("Health System")]
-    private const float maxHealth = 100f;
+    public readonly float maxHealth = 100f;
     private float currentHealth;
 
     [SerializeField] private GameObject fogRing;
@@ -67,8 +68,8 @@ public class Player : MonoBehaviour {
         if( interactionsWithLight >= magicalCane.GetNumbersOfInteractionsNeededToTurnOn() ) {
             magicalCane.ToggleLight();
             if(sanity == 0) {
-                maxSanity -= maxSanity * .2f;
-                sanity = maxSanity;
+                currentMaxSanity -= currentMaxSanity * .2f;
+                sanity = currentMaxSanity;
             }
         } else {
             if (coroutineRunning) {
@@ -97,10 +98,15 @@ public class Player : MonoBehaviour {
     /// <param name="dmgAmount">Amount of damage taken</param>
     public void TakeDamage(float dmgAmount) {
         if(currentHealth <= dmgAmount) {
+            currentHealth = 0f;
             Death();
         } else { 
             currentHealth -= dmgAmount;
         }
+    }
+
+    public float GetCurrentHealth() {
+        return currentHealth;
     }
 
     /// <summary>
@@ -110,12 +116,24 @@ public class Player : MonoBehaviour {
     public void DrainSanity() {
 
         if(sanity > 0) {
-            sanity = Mathf.Clamp(sanity - GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff(), 0f, maxSanity);
+            sanity = Mathf.Clamp(sanity - GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff(), 0f, currentMaxSanity);
         } else if(magicalCane.IsLightOn()) {
             //Light is on -> turn it off
             BlowTorch();
         }
 
+    }
+
+    public float GetMaxSanity() {
+        return maxSanity;
+    }
+
+    public float GetCurrentSanity() {
+        return sanity;
+    }
+
+    public float GetCurrentStamina() {
+        return stamina;
     }
 
     public void DecreaseStamina(float amount) {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LobbyMananger : MonoBehaviour {
 
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Player playerPrefab;
     [SerializeField] private Transform playerSpawnPoint;
 
     public LobbyMananger Instance { get; private set; }
@@ -34,7 +34,8 @@ public class LobbyMananger : MonoBehaviour {
         }
 
         // Spawn player in Lobby
-        GameObject player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity) as GameObject;
+        Player player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+        GameManager.Instance.SetPlayerOnSpawn(player);
     }
 
     public static void EnterNextLevel() {

@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
 
     private GameState state;
 
-    [SerializeField] private Player player;
+    private Player player;
     [SerializeField] private bool debugMode;
     [SerializeField] private GameDifficultyData[] gameDifficulties;
     [SerializeField] private int gameDifficultyIndex;
@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         Cursor.visible = false;
+        Debug.Log(player);
         ChangeState(GameState.WaitingToStart);
         //ChangeState(GameState.GamePlaying);
     }
@@ -86,6 +87,10 @@ public class GameManager : MonoBehaviour {
 
     public Player GetPlayer() {
         return player;
+    }
+
+    public void SetPlayerOnSpawn(Player player) {
+        this.player = player;
     }
 
 }

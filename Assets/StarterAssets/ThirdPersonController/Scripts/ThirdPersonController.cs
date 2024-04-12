@@ -369,7 +369,11 @@ namespace StarterAssets
         }
 
         private bool IsRunning() {
-            return _input.sprint && _player.CanRun();
+            return _input.sprint && _player.CanRun() && IsMoving();
+        }
+
+        private bool IsMoving() {
+            return _input.move != Vector2.zero;
         }
 
         private void OnDrawGizmosSelected()
