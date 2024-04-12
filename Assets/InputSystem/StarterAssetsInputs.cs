@@ -10,6 +10,7 @@ namespace StarterAssets
 	{
 
 		public event EventHandler OnInteractAction;
+		public static event EventHandler OnEscapePressed;
 
 		[Header("Character Input Values")]
 		private Player _player;
@@ -58,6 +59,10 @@ namespace StarterAssets
 			InteractInput(value.isPressed);
 		}
 
+		public void OnEscape(InputValue value) {
+			EscapeInput(value.isPressed);
+		}
+
 #endif
 
 
@@ -87,6 +92,13 @@ namespace StarterAssets
 		public void InteractInput(bool newInteractState) {
 			if (newInteractState) {
 				OnInteractAction?.Invoke(this, EventArgs.Empty);
+			}
+		}
+
+		public void EscapeInput(bool newEscapeState) {
+			Debug.Log("Esc Pressed");
+			if (newEscapeState) {
+				OnEscapePressed?.Invoke(this, EventArgs.Empty);
 			}
 		}
 

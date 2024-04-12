@@ -17,8 +17,21 @@ public class PlayerStatUI : MonoBehaviour {
     private float staminaEffectMax = 0.9f;
 
     private void Start() {
+        GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+
+        Show();
+
         healthBar.fillAmount = 1f;
         staminaBar.fillAmount = 1f;
+    }
+
+    private void GameManager_OnGameUnpaused(object sender, EventArgs e) {
+        Show();
+    }
+
+    private void GameManager_OnGamePaused(object sender, EventArgs e) {
+        Hide();
     }
 
     private void LateUpdate() {
@@ -47,6 +60,19 @@ public class PlayerStatUI : MonoBehaviour {
             float clampedValue = Mathf.Clamp(Mathf.Abs(value - 1f), staminaEffectMin, staminaEffectMax);
             vignette.intensity.SetValue(new UnityEngine.Rendering.ClampedFloatParameter(Mathf.Lerp(vignette.intensity.value, clampedValue, Time.deltaTime), staminaEffectMin, staminaEffectMax));
         }
+    }
+
+    private void Hide() {
+        gameObject.SetActive(false);
+    }
+
+    private void Show() {
+        gameObject.SetActive(true);
+    }
+
+    private void OnDestroy() {
+        GameManager.Instance.OnGamePaused -= GameManager_OnGamePaused;
+        GameManager.Instance.OnGameUnpaused -= GameManager_OnGameUnpaused;
     }
 
 }

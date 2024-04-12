@@ -1,3 +1,4 @@
+using StarterAssets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour {
 
     public static GameManager Instance { get; private set; }
+    public event EventHandler OnGamePaused;
+    public event EventHandler OnGameUnpaused;
 
     public enum GameState {
         WaitingToStart,
@@ -17,6 +20,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private GameState state;
+    private GameState lastStateBeforePause;
 
     private Player player;
     [SerializeField] private bool debugMode;
@@ -39,9 +43,13 @@ public class GameManager : MonoBehaviour {
 
     private void Start() {
         Cursor.visible = false;
-        Debug.Log(player);
+        StarterAssetsInputs.OnEscapePressed += StarterAssetsInputs_OnEscapePressed;
         ChangeState(GameState.WaitingToStart);
         //ChangeState(GameState.GamePlaying);
+    }
+
+    private void StarterAssetsInputs_OnEscapePressed(object sender, EventArgs e) {
+        TogglePauseGame();
     }
 
     private void Update() {
@@ -57,7 +65,7 @@ public class GameManager : MonoBehaviour {
                 currentTime = DayManager.Instance.GetCurrentGameTimeInHHMMSS();
                 break;
             case GameState.GamePaused:
-                DayManager.Instance.PauseDay();
+                //game is currently paused
                 break;
             case GameState.GameOver:
                 break;
@@ -78,9 +86,27 @@ public class GameManager : MonoBehaviour {
         return state == GameState.GamePlaying;
     }
 
-    public bool IsGamePause() {
+    public bool IsGamePaused() {
         return state == GameState.GamePaused;
     }
+
+    private void TogglePauseGame() {
+        if (!IsGamePaused()) {
+            lastStateBeforePause = state;
+            ChangeState(GameState.GamePaused);
+            Cursor.visible = true;
+            Time.timeScale = 0f;
+
+            OnGamePaused?.Invoke(this, EventArgs.Empty);
+        } else {
+            ChangeState(lastStateBeforePause);
+            Cursor.visible = false;
+            Time.timeScale = 1f;
+
+            OnGameUnpaused?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public bool IsInDebugMode() {
         return debugMode;
     }
@@ -91,6 +117,10 @@ public class GameManager : MonoBehaviour {
 
     public void SetPlayerOnSpawn(Player player) {
         this.player = player;
+    }
+
+    private void OnDestroy() {
+        StarterAssetsInputs.OnEscapePressed -= StarterAssetsInputs_OnEscapePressed;
     }
 
 }
