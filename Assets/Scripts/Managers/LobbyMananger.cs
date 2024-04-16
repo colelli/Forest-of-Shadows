@@ -9,9 +9,8 @@ public class LobbyMananger : MonoBehaviour {
     [SerializeField] private Transform playerSpawnPoint;
 
     public LobbyMananger Instance { get; private set; }
-    private GameSaveData _newGameDefaultSave;
     private static GameSaveData _currentSave;
-    private const string _DEFAULT_SAVED_GAME_FILENAME = "savedgame";
+    private const string _DEFAULT_SAVED_GAME_FILENAME = "game_data";
 
     private void Awake() {
         //We check if there is already a Singleton of LobbyManager
@@ -23,14 +22,13 @@ public class LobbyMananger : MonoBehaviour {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        _newGameDefaultSave = new GameSaveData(0, 0);
     }
 
     private void Start() {
         if (SaveManager.TryReadSavedData<GameSaveData>(_DEFAULT_SAVED_GAME_FILENAME, out GameSaveData savedGame)) {
             _currentSave = savedGame;
         } else {
-            _currentSave = _newGameDefaultSave;
+            _currentSave = DifficultyUI.GetDefaultSaveData();
         }
 
         // Spawn player in Lobby
@@ -45,7 +43,7 @@ public class LobbyMananger : MonoBehaviour {
 
     public static void EnterLobbyAndSaveGame(int score) {
         // Save new progress
-        SaveManager.SaveData<GameSaveData>(new GameSaveData(_currentSave.level + 1, _currentSave.score + score), _DEFAULT_SAVED_GAME_FILENAME);
+        SaveManager.SaveData<GameSaveData>(new GameSaveData(_currentSave.difficulty, _currentSave.level + 1, _currentSave.score + score), _DEFAULT_SAVED_GAME_FILENAME);
         LoadingManager.Load(LoadingManager.Scene.LobbyScene);
     }
 

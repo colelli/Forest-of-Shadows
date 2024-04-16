@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         Cursor.visible = false;
         StarterAssetsInputs.OnEscapePressed += StarterAssetsInputs_OnEscapePressed;
+        TryLoadSavedGameData();
         ChangeState(GameState.WaitingToStart);
         //ChangeState(GameState.GamePlaying);
     }
@@ -117,6 +118,16 @@ public class GameManager : MonoBehaviour {
 
     public void SetPlayerOnSpawn(Player player) {
         this.player = player;
+    }
+
+    public void SetDifficulty(int difficultyIndex) {
+        gameDifficultyIndex = difficultyIndex;
+    }
+
+    private void TryLoadSavedGameData() {
+        if (SaveManager.TryReadSavedData<GameSaveData>("game_data",out GameSaveData gameData)) {
+            gameDifficultyIndex = gameData.difficulty;
+        }
     }
 
     private void OnDestroy() {

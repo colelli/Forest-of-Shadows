@@ -26,7 +26,7 @@ public class SaveManager : MonoBehaviour {
     }
 
     public static bool TryReadSavedData<T>(string filename, out T savedData) {
-        if(System.IO.File.Exists(filename)) {
+        if(System.IO.File.Exists(Application.persistentDataPath + $"/{filename}.json")) {
             // File exists
             string savedSettings = System.IO.File.ReadAllText(Application.persistentDataPath + $"/{filename}.json");
             if (savedSettings != "" && savedSettings != null) {
@@ -72,10 +72,12 @@ public class SettingsData {
 
 [System.Serializable]
 public class GameSaveData {
+    public int difficulty;
     public int level;
     public int score;
 
-    public GameSaveData(int level, int score) {
+    public GameSaveData(int difficulty, int level, int score) {
+        this.difficulty = difficulty;
         this.level = level;
         this.score = score;
     }
