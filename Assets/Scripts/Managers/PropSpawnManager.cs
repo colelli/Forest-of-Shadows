@@ -32,11 +32,13 @@ public class PropSpawnManager : MonoBehaviour {
 
     private void SpawnPropInRandomLocation() {
         Transform parent = new GameObject("PropParent").transform;
-        foreach(PropSO propSO in DeliveryManager.Instance.GetDeliverablesList()) {
-            bool propSpawned = false;
-            do {
-                propSpawned = InstantiateProp(Utils.GetRandomLocation(mapSize, mapOffset), propSO.propPrefab, mask, parent);
-            } while (!propSpawned);
+        foreach(KeyValuePair<PropSO, int> entry in DeliveryManager.Instance.GetDeliverablesList()) {
+            for(int i=0; i<entry.Value; i++) {
+                bool propSpawned = false;
+                do {
+                    propSpawned = InstantiateProp(Utils.GetRandomLocation(mapSize, mapOffset), entry.Key.propPrefab, mask, parent);
+                } while (!propSpawned);
+            }
         }
     }
 

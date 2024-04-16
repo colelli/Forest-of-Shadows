@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class DeliveryManager : MonoBehaviour {
 
+    public event EventHandler OnPropsListGenerated;
+    public event EventHandler OnPropsDelivered;
+
     public static DeliveryManager Instance { get; private set; }
 
     [SerializeField] private PropListSO propList;
     private int propCountToDeliver;
-    private int deliveredProps;
-    private List<PropSO> propsToDeliver;
+    private Dictionary<PropSO, int> deliveredProps;
+    private Dictionary<PropSO, int> propsToDeliver;
 
     private void Awake() {
         //We check if there is already a Singleton of DeliveryManager
@@ -25,8 +28,8 @@ public class DeliveryManager : MonoBehaviour {
         SetupDeliveryManager();
     }
     private void SetupDeliveryManager() {
-        deliveredProps = 0;
-        propsToDeliver = new List<PropSO>();
+        deliveredProps = new Dictionary<PropSO, int>();
+        propsToDeliver = new Dictionary<PropSO, int>();
         CalculatePropCountToDeliver();
         PopulateDeliverablesList();
     }
@@ -37,35 +40,52 @@ public class DeliveryManager : MonoBehaviour {
     }
 
     private void PopulateDeliverablesList() {
-        for(int i = 0; i < propCountToDeliver; i++) {
-            propsToDeliver.Add(propList.propSOList[UnityEngine.Random.Range(0, propList.propSOList.Count)]);
-        }
-    }
+        int currentPropCounter = 0;
+        while(currentPropCounter < propCountToDeliver) {
+            // Get a random prop from the list and generate a random quantity
+            PropSO propToDeliver = propList.propSOList[UnityEngine.Random.Range(0, propList.propSOList.Count)];
+            int quantity = UnityEngine.Random.Range(1, propCountToDeliver - currentPropCounter);
 
-    public List<PropSO> GetDeliverablesList() {
-        return propsToDeliver;
+            if (propsToDeliver.ContainsKey(propToDeliver)) {
+                // Update current key value
+                propsToDeliver[propToDeliver] += quantity;
+            } else {
+                // Add new key
+                propsToDeliver.Add(propToDeliver, quantity);
+            }
+
+            currentPropCounter += quantity;
+        }
+        OnPropsListGenerated?.Invoke(this, EventArgs.Empty);
     }
 
     public bool DeliverProp(PropBase prop) {
 
-        for(int i = 0; i < propsToDeliver.Count; i++) {
+        // Get delivered propSO
+        PropSO deliveredPropSO = prop.GetPropSO();
 
-            PropSO propSO = propsToDeliver[i];
-
-            if (propSO == prop.GetPropSO()) {
-
-                propsToDeliver.RemoveAt(i);
-                prop.DestroySelf();
-                deliveredProps++;
-
-                return true;
-
+        if (propsToDeliver.ContainsKey(deliveredPropSO)) {
+            if (deliveredProps.ContainsKey(deliveredPropSO)){
+                // Update count
+                deliveredProps[deliveredPropSO]++;
+            } else {
+                // Add new key
+                deliveredProps.Add(deliveredPropSO, 1);
             }
-
+            OnPropsDelivered?.Invoke(this, EventArgs.Empty);
+            return true;
         }
 
         return false;
 
+    }
+
+    public Dictionary<PropSO, int> GetDeliverablesList() {
+        return propsToDeliver;
+    }
+
+    public Dictionary<PropSO, int> GetDeliveredList() {
+        return deliveredProps;
     }
 
 }
