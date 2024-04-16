@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propPrefab: {fileID: 4818205667915914869, guid: af0715fd82f39004689e26d04fc278ea,
     type: 3}
-  propIcon: {fileID: 0}
+  propIcon: {fileID: 21300000, guid: ed1ebb7913fcb5747b1805bc91507890, type: 3}
   propName: Red Mushroom

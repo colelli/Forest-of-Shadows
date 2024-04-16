@@ -26,6 +26,7 @@ public class PropBase : MonoBehaviour, IInteractable {
     public bool Interact() {
         //Player interacted -> We deliver the prop and notify the result
         if (DeliveryManager.Instance.DeliverProp(this)) {
+            DestroySelf();
             return true;
         }
         return false;

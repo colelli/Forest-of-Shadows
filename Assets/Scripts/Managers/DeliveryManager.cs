@@ -56,6 +56,9 @@ public class DeliveryManager : MonoBehaviour {
 
             currentPropCounter += quantity;
         }
+        foreach(KeyValuePair<PropSO, int> entry in propsToDeliver) {
+            Debug.Log($"Prop: {entry.Key} | Count: {entry.Value}");
+        }
         OnPropsListGenerated?.Invoke(this, EventArgs.Empty);
     }
 

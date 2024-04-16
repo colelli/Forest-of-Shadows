@@ -31,7 +31,7 @@ public class DeliveryManagerUI : MonoBehaviour {
         // Clean-up logic
         foreach (Transform child in container) {
             if (child == propTemplateUI) continue;
-            Destroy(child);
+            Destroy(child.gameObject);
         }
 
         // Instantiate deliverables UI
