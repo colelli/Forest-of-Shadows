@@ -10,16 +10,28 @@ public class MagicalCane : MonoBehaviour {
     [SerializeField] private bool autoUpdate;
     [SerializeField] [Min(1.5f)] [Range(1.5f, 5f)] private float lightSourceRadius;
     [SerializeField] [Tooltip("Toggles IsTrigger in Collider options")] private bool isColliderTrigger = true;
-    [SerializeField] private bool isLightOn;
     private int interactionsNeededToTurnOn = 5;
     [SerializeField] private float baseAttackDamage = 10f;
+    [Header("Light & Visuals")]
+    [SerializeField] private bool isLightOn;
+    [SerializeField] private Light lightSource;
+    [SerializeField] private Transform lightVisual;
     private float attackDamage;
 
     private SphereCollider lightSourceCollider;
 
     private void Awake() {
+        DayManager.OnNightStarted += DayManager_OnNightStarted;
+
         lightSourceCollider = GetComponent<SphereCollider>();
         attackDamage = baseAttackDamage;
+
+        isLightOn = false;
+        UpdateLightStatus();
+    }
+
+    private void DayManager_OnNightStarted(object sender, System.EventArgs e) {
+        ToggleLight();
     }
 
     private void Start() {
@@ -42,8 +54,14 @@ public class MagicalCane : MonoBehaviour {
     }
     public void ToggleLight() {
         isLightOn = !isLightOn;
-        lightSourceCollider.enabled = isLightOn;
+        UpdateLightStatus();
         Debug.Log($"Light Status: {isLightOn}");
+    }
+
+    private void UpdateLightStatus() {
+        lightSourceCollider.enabled = isLightOn;
+        lightSource.enabled = isLightOn;
+        lightVisual.gameObject.SetActive(isLightOn);
     }
 
     public float GetAttackDamage() {
@@ -52,6 +70,10 @@ public class MagicalCane : MonoBehaviour {
 
     public bool CanAutoUpdate() {
         return autoUpdate;
+    }
+
+    private void OnDestroy() {
+        DayManager.OnNightStarted -= DayManager_OnNightStarted;
     }
 
 }

@@ -6,6 +6,8 @@ using UnityEngine.Rendering.Universal;
 
 public class DayManager : MonoBehaviour {
 
+    public static event EventHandler OnNightStarted;
+
     public static DayManager Instance { get; private set; }
 
     [Header("Graphics References")]
@@ -76,6 +78,11 @@ public class DayManager : MonoBehaviour {
     public void SwitchState(DayBaseState state) {
         currentState = state;
         state.EnterState(this);
+
+        if(state == nightState) {
+            // Night started -> Notify subs
+            OnNightStarted?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public float GetCurrentGameTime() {

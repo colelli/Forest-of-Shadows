@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
 
     private void Inputs_OnInteractAction(object sender, System.EventArgs e) {
 
-        if (!magicalCane.IsLightOn()) {
+        if (GameManager.Instance.IsGamePlaying() && !magicalCane.IsLightOn()) {
             InteractWithLight();
         }else if (interactTarget != null) {
             //We are next to a prop that we can pick up
