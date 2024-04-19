@@ -12,10 +12,21 @@ public class DeliveryManagerUI : MonoBehaviour {
     }
 
     private void Start() {
+        GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
+        GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+
         DeliveryManager.Instance.OnPropsListGenerated += DeliveryManager_OnPropsListGenerated;
         DeliveryManager.Instance.OnPropsDelivered += DeliveryManager_OnPropsDelivered;
 
         UpdateVisuals();
+    }
+
+    private void GameManager_OnGamePaused(object sender, System.EventArgs e) {
+        gameObject.SetActive(false);
+    }
+
+    private void GameManager_OnGameUnpaused(object sender, System.EventArgs e) {
+        gameObject.SetActive(true);
     }
 
     private void DeliveryManager_OnPropsDelivered(object sender, System.EventArgs e) {

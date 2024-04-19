@@ -12,6 +12,8 @@ public class AlertUI : MonoBehaviour, IMenuUI {
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
 
+    private bool _isVisible = false;
+
     private void Awake() {
         gameObject.SetActive(false);
     }
@@ -30,6 +32,11 @@ public class AlertUI : MonoBehaviour, IMenuUI {
         });
     }
 
+    public void ToggleVisibility() {
+        _isVisible = !_isVisible;
+        if (_isVisible) { Show(); } else { Hide(); } 
+    }
+
     public void Show() {
         gameObject.SetActive (true);
     }
@@ -40,6 +47,10 @@ public class AlertUI : MonoBehaviour, IMenuUI {
 
     public void SetDisplayInfo(string text) { 
         displayedInfo.text = text;
+    }
+
+    public void ResetVisibility() {
+        _isVisible = false;
     }
 
 }

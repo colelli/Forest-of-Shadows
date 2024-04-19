@@ -20,6 +20,7 @@ public class SettingsUI : MonoBehaviour, IMenuUI {
     private const string _SETTINGS_FILENAME = "settings";
     private SettingsData _defaultSettings = new SettingsData(true,"W","A","S","D","E",50.0f);
     private SettingsData _savedSettings = null;
+    private bool _isVisible = false;
 
     private void Start() {
         TryLoadSavedSettings();
@@ -46,6 +47,11 @@ public class SettingsUI : MonoBehaviour, IMenuUI {
         vignetteToggle.isOn = _savedSettings.vignittePP;
     }
 
+    public void ToggleVisibility() {
+        _isVisible = !_isVisible;
+        if(_isVisible) { Show(); } else { Hide(); }
+    }
+
     public void Show() {
         gameObject.SetActive(true);
     }
@@ -63,6 +69,10 @@ public class SettingsUI : MonoBehaviour, IMenuUI {
 
         }
         return _savedSettings;
+    }
+
+    public void ResetVisibility() {
+        _isVisible = false;
     }
 
 }

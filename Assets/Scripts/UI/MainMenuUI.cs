@@ -49,7 +49,7 @@ public class MainMenuUI : MonoBehaviour {
     private void SetupButtonListeners() {
         newGameButton.onClick.AddListener(() => {
             // newGame button clicked
-            difficultyPanel.Show();
+            difficultyPanel.ToggleVisibility();
             currentShownSideMenuPanel = difficultyPanel;
         });
 
@@ -59,7 +59,7 @@ public class MainMenuUI : MonoBehaviour {
 
         settingsButton.onClick.AddListener(() => {
             // settings button clicked
-            settingsPanel.Show();
+            settingsPanel.ToggleVisibility();
             currentShownSideMenuPanel = settingsPanel;
         });
 

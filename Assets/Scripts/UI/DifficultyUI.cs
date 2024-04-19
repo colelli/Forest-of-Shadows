@@ -13,6 +13,7 @@ public class DifficultyUI : MonoBehaviour, IMenuUI {
     public static readonly string _GAMESAVE_FILENAME = "game_data";
     private static GameSaveData _defaultNewGameData = new GameSaveData(1, 1, 0);
     private GameSaveData _currentGameData = null;
+    private bool _isVisible = false;
 
     private void Awake() {
         easy.onClick.AddListener(() => {
@@ -43,6 +44,11 @@ public class DifficultyUI : MonoBehaviour, IMenuUI {
         } else {
             _currentGameData = _defaultNewGameData;
         }
+    }
+
+    public void ToggleVisibility() {
+        _isVisible = !_isVisible;
+        if (_isVisible) { Show(); } else { Hide(); }
     }
 
     public void Hide() {

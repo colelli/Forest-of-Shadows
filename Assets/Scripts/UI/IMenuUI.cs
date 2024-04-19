@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IMenuUI {
 
+    public void ToggleVisibility();
     public void Hide();
     public void Show();
 
