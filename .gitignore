@@ -16,7 +16,9 @@
 /[Aa]ssets/Prefabs*
 /[Aa]ssets/Scenes*
 /[Aa]ssets/UI*
-/[Aa]ssets/Visuals
+/[Aa]ssets/Visuals*
+/[Aa]ssets/Audio*
+
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

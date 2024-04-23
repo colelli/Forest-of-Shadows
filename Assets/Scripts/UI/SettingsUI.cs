@@ -58,6 +58,9 @@ public class SettingsUI : MonoBehaviour, IMenuUI {
 
     public void Hide() {
         SaveManager.SaveData(GetCurrentUserSettings(), _SETTINGS_FILENAME);
+        //Update AudioManager
+        AudioManager.Instance.UpdateAudioSourcesVolume(_savedSettings.masterVolume / 100f);
+
         gameObject.SetActive(false);
     }
 
@@ -66,7 +69,7 @@ public class SettingsUI : MonoBehaviour, IMenuUI {
             _savedSettings = _defaultSettings;
         } else {
             // get settings from UI
-
+            _savedSettings = new SettingsData(vignetteToggle.isOn, forward.text, left.text, back.text, right.text, interact.text, masterVolumeSlider.value);
         }
         return _savedSettings;
     }

@@ -57,6 +57,9 @@ public class DeliveryManagerUI : MonoBehaviour {
     private void OnDestroy() {
         DeliveryManager.Instance.OnPropsListGenerated -= DeliveryManager_OnPropsListGenerated;
         DeliveryManager.Instance.OnPropsDelivered -= DeliveryManager_OnPropsDelivered;
+
+        GameManager.Instance.OnGamePaused -= GameManager_OnGamePaused;
+        GameManager.Instance.OnGameUnpaused -= GameManager_OnGameUnpaused;
     }
 
 }
