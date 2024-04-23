@@ -5,6 +5,11 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour {
 
     public static AudioManager Instance {  get; private set; }
+    public enum Indices {
+        AMBIENT,
+        CREATURES,
+        SFX
+    }
 
     [Header("Ambient Sounds")]
     [SerializeField] public AudioClip[] day;
@@ -14,6 +19,12 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioClip[] dayCreatures;
     [SerializeField] private AudioClip[] nightCreatures;
 
+    /*
+     * Audio Source mappings (per index):
+     * [0] = Ambient Sounds
+     * [1] = Creatures
+     * [2] = SFX
+     */
     private AudioSource[] audioSources;
 
     private void Awake() {
@@ -37,13 +48,47 @@ public class AudioManager : MonoBehaviour {
         PlayAudios();
     }
 
+    public void PlayMorningSounds() {
+        // Set sounds
+        //audioSources[0].clip = GetRandomDayAmbient();
+        audioSources[1].clip = GetRandomDayCreatureSound();
+
+        // Play sounds
+        //audioSources[0].Play();
+        audioSources[1].Play();
+    }
+
+    public void PlayNightSounds() {
+        // Set sounds
+        audioSources[0].clip = GetRandomNightAmbient();
+        audioSources[1].clip = GetRandomNightCreatureSound();
+
+        // Play sounds
+        audioSources[0].Play();
+        audioSources[1].Play();
+    }
+
+    public void PlayOneShot(AudioClip clip) {
+        audioSources[2].PlayOneShot(clip);
+    }
+
+    public void StopAllSounds() {
+        foreach(AudioSource source in audioSources) {
+            source.Stop();
+        }
+    }
+
+    public void StopSoundAtIndex(Indices index) {
+        audioSources[(int)index].Stop();
+    }
+
     private void GetAllAudioSourceReferences() {
         audioSources = gameObject.GetComponents<AudioSource>();
     }
 
     private void PlayAudios() {
-        foreach(AudioSource source in audioSources) {
-            if(source.clip != null) {
+        foreach (AudioSource source in audioSources) {
+            if (source.clip != null) {
                 source.Play();
             }
         }

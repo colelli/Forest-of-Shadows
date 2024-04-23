@@ -17,6 +17,8 @@ public class Player : MonoBehaviour {
     private int interactionsWithLight;
 
     [Header("Sanity System")]
+    [SerializeField] private AudioClip _madnessSound;
+    [SerializeField] private AudioClip[] _blowTorch;
     private const float maxSanity = 100f;
     private float currentMaxSanity = 100f;
     private float sanity;
@@ -51,9 +53,11 @@ public class Player : MonoBehaviour {
 
     private void Inputs_OnInteractAction(object sender, System.EventArgs e) {
 
-        if (GameManager.Instance.IsGamePlaying() && !magicalCane.IsLightOn()) {
+        if (GameManager.Instance.IsGamePaused()) return;
+
+        if (GameManager.Instance.IsNight() && !magicalCane.IsLightOn()) {
             InteractWithLight();
-        }else if (interactTarget != null) {
+        }else if (interactTarget != null && !interactTarget.IsBusy()) {
             //We are next to a prop that we can pick up
             if (interactTarget.Interact()) {
                 interactTarget = null;
@@ -67,6 +71,7 @@ public class Player : MonoBehaviour {
 
         if( interactionsWithLight >= magicalCane.GetNumbersOfInteractionsNeededToTurnOn() ) {
             magicalCane.ToggleLight();
+            AudioManager.Instance.StopSoundAtIndex(AudioManager.Indices.SFX);
             if(sanity == 0) {
                 currentMaxSanity -= currentMaxSanity * .2f;
                 sanity = currentMaxSanity;
@@ -119,7 +124,9 @@ public class Player : MonoBehaviour {
             sanity = Mathf.Clamp(sanity - GameManager.Instance.GetCurrentDifficultyData().GetSanityDebuff(), 0f, currentMaxSanity);
         } else if(magicalCane.IsLightOn()) {
             //Light is on -> turn it off
+            AudioManager.Instance.PlayOneShot(_blowTorch[UnityEngine.Random.Range(0, _blowTorch.Length)]);
             BlowTorch();
+            AudioManager.Instance.PlayOneShot(_madnessSound);
         }
 
     }

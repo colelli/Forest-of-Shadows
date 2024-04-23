@@ -16,3 +16,5 @@ MonoBehaviour:
     type: 3}
   propIcon: {fileID: 21300000, guid: ed1ebb7913fcb5747b1805bc91507890, type: 3}
   propName: Red Mushroom
+  clips:
+  - {fileID: 8300000, guid: 370faf2fb849f1e4ca91476466f4740e, type: 3}

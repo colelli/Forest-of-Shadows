@@ -87,6 +87,14 @@ public class GameManager : MonoBehaviour {
         return state == GameState.GamePlaying;
     }
 
+    public bool IsNight() {
+        if(DayManager.Instance != null) {
+            return DayManager.Instance.IsNight();
+        } else {
+            return false;
+        }
+    }
+
     public bool IsGamePaused() {
         return state == GameState.GamePaused;
     }

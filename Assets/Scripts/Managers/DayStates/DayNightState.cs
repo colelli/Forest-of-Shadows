@@ -14,6 +14,7 @@ public class DayNightState : DayBaseState {
     public override void EnterState(DayManager context) {
         SetupLightAndVolume(context);
         currentSpawnTimer = 999f;
+        AudioManager.Instance.PlayNightSounds();
         Debug.Log($"[{context.GetType()}] >>> Night started");
     }
 

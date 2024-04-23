@@ -14,6 +14,7 @@ public class DayMorningState : DayBaseState {
     public override void EnterState(DayManager context) {
         SetupLightAndVolume(context);
         context.StartDay();
+        AudioManager.Instance.PlayMorningSounds();
 
         Debug.Log($"[{context.GetType()}] >>> Morning started");
     }

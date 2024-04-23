@@ -13,6 +13,7 @@ public static class LoadingManager {
 
     public static void Load(Scene targetScene) {
         LoadingManager.targetScene = targetScene;
+        AudioManager.Instance.StopAllSounds();
         SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }
 

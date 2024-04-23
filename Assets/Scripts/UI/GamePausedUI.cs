@@ -69,7 +69,7 @@ public class GamePausedUI : MonoBehaviour {
         quitGame.onClick.AddListener(() => {
             // quitGame button clicked
             currentShownSideMenuPanel = alertUI;
-            alertUI.SetDisplayInfo("Are you sure you want to quit?");
+            alertUI.SetDisplayInfo("You don't really want to quit, do you?");
             alertUI.SetCancelButtonEvent(() => {
                 alertUI.Hide();
                 alertUI.ResetVisibility();

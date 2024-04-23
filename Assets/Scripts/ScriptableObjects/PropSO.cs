@@ -6,5 +6,6 @@ public class PropSO : ScriptableObject {
     public Transform propPrefab;
     public Sprite propIcon;
     public string propName;
+    public AudioClip[] clips;
 
 }
