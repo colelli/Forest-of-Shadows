@@ -9,6 +9,7 @@ public class LobbyDoor : MonoBehaviour, IInteractable {
     public bool Interact() {
         if (GameManager.Instance.IsGamePlaying()) {
             // TO-DO: Add checks for score & alert
+            GameManager.Instance.ChangeState(GameManager.GameState.WaitingToStart);
             LobbyMananger.EnterLobbyAndSaveGame(0);
         } else {
             LobbyMananger.EnterNextLevel();

@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
         //We check if there is already a Singleton of GameManager
         if (Instance != null && Instance != this) {
             Destroy(this);
-            throw new System.Exception($"[{this.name}] >>> An Instance of this Singleton already exists!");
+            //throw new System.Exception($"[{this.name}] >>> An Instance of this Singleton already exists!");
         } else {
             //There are not instances
             Instance = this;
@@ -61,7 +61,6 @@ public class GameManager : MonoBehaviour {
                 //player is currently inside the cabin or still hasn't started the day
                 break; 
             case GameState.GamePlaying:
-                Debug.Log($"[{this.name}] >>> Game Started\n");
                 DayManager.Instance.UpdateCurrentState();
                 currentTime = DayManager.Instance.GetCurrentGameTimeInHHMMSS();
                 break;

@@ -17,11 +17,11 @@ public class EnemySpawnManager : MonoBehaviour {
         //We check if there is already a Singleton of EnemySpawnManager
         if (Instance != null && Instance != this) {
             Destroy(this);
-            throw new System.Exception("[{$this.name}] >>> An Instance of this Singleton already exists!");
+            throw new System.Exception($"[{this.name}] >>> An Instance of this Singleton already exists!");
         } else {
             //There are not instances
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
     }
 

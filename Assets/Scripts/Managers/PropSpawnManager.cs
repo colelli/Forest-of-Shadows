@@ -19,7 +19,7 @@ public class PropSpawnManager : MonoBehaviour {
         } else {
             //There are not instances
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
     }
 

@@ -23,7 +23,7 @@ public class DeliveryManager : MonoBehaviour {
         } else {
             //There are not instances
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         SetupDeliveryManager();
     }
