@@ -161,6 +161,10 @@ public struct GameDifficultyData {
     [SerializeField] [Min(1)] [Tooltip("Amout of sanity to drain every 'Sanity Debuff Interval' seconds")] private int sanityDebuff;
     [SerializeField] [Tooltip("Time interval to apply sanity debuff")] private float sanityDebuffInterval;
 
+    public int GetDifficultyLevel() {
+        return (int)difficultyLevel;
+    }
+
     public int GetDifficultyMaxPwrLevel() {
         return difficultyMaxPwrLvl;
     }
