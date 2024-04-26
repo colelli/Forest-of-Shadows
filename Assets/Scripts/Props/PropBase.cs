@@ -5,8 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class PropBase : MonoBehaviour, IInteractable {
 
-    [SerializeField] private PropSO _propSO;
-    [SerializeField] [Min(1f)] private float _localScale;
+    [SerializeField] protected PropSO _propSO;
+    [SerializeField] [Min(1f)] private float _localScale = 1f;
     private BoxCollider _propCollider;
 
     private void Start() {
@@ -19,11 +19,11 @@ public class PropBase : MonoBehaviour, IInteractable {
         return _propSO;
     }
 
-    public void DestroySelf() {
+    protected void DestroySelf() {
         Destroy(gameObject);
     }
 
-    public bool Interact() {
+    public virtual bool Interact() {
         //Player interacted -> We deliver the prop and notify the result
         if (DeliveryManager.Instance.DeliverProp(this)) {
             AudioManager.Instance.PlayOneShot(_propSO.clips[Random.Range(0, _propSO.clips.Length)]);

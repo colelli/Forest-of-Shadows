@@ -110,6 +110,10 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void Heal(float healedAmount) {
+        currentHealth = Mathf.Clamp(currentHealth + healedAmount, 0f, 100f);
+    }
+
     public float GetCurrentHealth() {
         return currentHealth;
     }
@@ -129,6 +133,10 @@ public class Player : MonoBehaviour {
             AudioManager.Instance.PlayOneShot(_madnessSound);
         }
 
+    }
+
+    public void RestoreSanity(float restoredAmount) {
+        sanity = Mathf.Clamp(sanity + restoredAmount, 0f, 100f);
     }
 
     public float GetMaxSanity() {

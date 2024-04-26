@@ -32,11 +32,13 @@ public class GamePausedUI : MonoBehaviour {
     }
 
     private void GameManager_OnGameUnpaused(object sender, System.EventArgs e) {
+        Cursor.visible = false;
         HideSidePanel();
         Hide();
     }
 
     private void GameManager_OnGamePaused(object sender, System.EventArgs e) {
+        Cursor.visible = true;
         settingsUI.ResetVisibility();
         alertUI.ResetVisibility();
         Show();
