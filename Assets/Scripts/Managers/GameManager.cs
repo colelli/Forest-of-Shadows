@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public enum GameState {
         WaitingToStart,
         GamePlaying,
+        GamePausedUI,
         GamePaused,
         GameOver,
     }
@@ -44,12 +45,25 @@ public class GameManager : MonoBehaviour {
     private void Start() {
         Cursor.visible = false;
         StarterAssetsInputs.OnEscapePressed += StarterAssetsInputs_OnEscapePressed;
+        Diary.OnGamePausedUI += Diary_OnGamePausedUI;
+        Diary.OnGameUnpausedUI += Diary_OnGameUnpausedUI;
         TryLoadSavedGameData();
         ChangeState(GameState.WaitingToStart);
         //ChangeState(GameState.GamePlaying);
     }
 
+    private void Diary_OnGameUnpausedUI(object sender, EventArgs e) {
+       ChangeState(GameState.GamePaused);
+    }
+
+    private void Diary_OnGamePausedUI(object sender, EventArgs e) {
+        lastStateBeforePause = state;
+        Cursor.visible = true;
+        ChangeState(GameState.GamePausedUI);
+    }
+
     private void StarterAssetsInputs_OnEscapePressed(object sender, EventArgs e) {
+        if (IsGamePausedUI()) return;
         TogglePauseGame();
     }
 
@@ -96,6 +110,10 @@ public class GameManager : MonoBehaviour {
 
     public bool IsGamePaused() {
         return state == GameState.GamePaused;
+    }
+
+    public bool IsGamePausedUI() {
+        return state == GameState.GamePausedUI;
     }
 
     private void TogglePauseGame() {

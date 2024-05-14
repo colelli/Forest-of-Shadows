@@ -52,12 +52,12 @@
                 },
                 {
                     "name": "Escape",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "4d89800a-829d-4ef4-85fa-c4aa43100803",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -265,7 +265,7 @@
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "KeyboardMouse",
                     "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
