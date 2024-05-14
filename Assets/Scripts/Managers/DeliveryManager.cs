@@ -83,6 +83,10 @@ public class DeliveryManager : MonoBehaviour {
 
     }
 
+    public bool CanReturnToLobby() {
+        return deliveredProps.Count >= Mathf.Ceil(propCountToDeliver / 2);
+    }
+
     public Dictionary<PropSO, int> GetDeliverablesList() {
         return propsToDeliver;
     }

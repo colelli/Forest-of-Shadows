@@ -5,14 +5,22 @@ using UnityEngine;
 public class LobbyDoor : MonoBehaviour, IInteractable {
 
     [SerializeField] private AudioClip _clip;
+    [SerializeField] private AudioClip _errorClip;
 
     public bool Interact() {
+        AudioClip clipToPlay = null;
         if (GameManager.Instance.IsGamePlaying()) {
-            // TO-DO: Add checks for score & alert
-            GameManager.Instance.ChangeState(GameManager.GameState.WaitingToStart);
-            LobbyMananger.EnterLobbyAndSaveGame(0);
+            if(DeliveryManager.Instance.CanReturnToLobby()) {
+                GameManager.Instance.ChangeState(GameManager.GameState.WaitingToStart);
+                LobbyMananger.EnterLobbyAndSaveGame(0);
+                clipToPlay = _clip;
+            } else {
+                // TO-DO: Show alert
+                clipToPlay = _errorClip;
+            }
         } else {
             LobbyMananger.EnterNextLevel();
+            clipToPlay = _clip;
         }
         AudioManager.Instance.PlayOneShot(_clip);
         return true;
