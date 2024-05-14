@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tree : MonoBehaviour {
@@ -10,6 +11,10 @@ public class Tree : MonoBehaviour {
     private void Awake() {
         treeRenderer.enabled = true;
         placeholderRenderer.enabled = false;
+    }
+
+    private void Start() {
+        treeRenderer.enabled = false;
     }
 
     public void TogglePlaceHolderVisibility() {
@@ -28,5 +33,12 @@ public class Tree : MonoBehaviour {
         StopCoroutine(Fade());
     }
 
+    public void Show() {
+        treeRenderer.enabled = true;
+    }
+
+    public void Hide() {
+        treeRenderer.enabled = false;
+    }
 
 }
