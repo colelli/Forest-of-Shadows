@@ -111,6 +111,7 @@ public class DayManager : MonoBehaviour {
     public GameDayGraphicsData GetMorningGraphicsData() { return morningGraphicsData; }
     public GameDayGraphicsData GetAfternoonGraphicsData() { return afternoonGraphicsData; }
     public GameDayGraphicsData GetNightGraphicsData() { return nightGraphicsData; }
+    public float GetGameTimeMultiplier() { return gameTimeMultiplier; }
 
 }
 

@@ -20,6 +20,7 @@ public class DayAfternoonState : DayBaseState {
         UpdateLightAndVolume(context);
         if (context.GetCurrentGameTime() >= NIGHT_THRESHOLD) {
             //6-hours passed from afternoon -> switch to night
+            AudioManager.Instance.ScheduleNightSounds();
             context.SwitchState(context.nightState);
         }
     }

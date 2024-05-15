@@ -58,14 +58,16 @@ public class AudioManager : MonoBehaviour {
         audioSources[1].Play();
     }
 
-    public void PlayNightSounds() {
+    public void ScheduleNightSounds() {
+        double time = AudioSettings.dspTime;
         // Set sounds
         audioSources[0].clip = GetRandomNightAmbient();
         audioSources[1].clip = GetRandomNightCreatureSound();
 
         // Play sounds
-        audioSources[0].Play();
-        audioSources[1].Play();
+        double scheduledTime = time + 0.5d;
+        audioSources[0].PlayScheduled(scheduledTime);
+        audioSources[1].PlayScheduled(scheduledTime);
     }
 
     public void PlayOneShot(AudioClip clip) {
