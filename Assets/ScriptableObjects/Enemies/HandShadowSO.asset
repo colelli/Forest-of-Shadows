@@ -18,5 +18,6 @@ MonoBehaviour:
   enemyName: Hand Shadow
   enemyMaxHealth: 25
   enemyMaxMovementSpeed: 2
-  enemyPowerLevel: 2
-  baseAttackDamage: 10
+  enemyPowerLevel: 1
+  baseAttackDamage: 20
+  sanityDamage: 20

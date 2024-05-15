@@ -13,5 +13,6 @@ public class EnemySO : ScriptableObject {
     [Range(0f, 10f)] public float enemyMaxMovementSpeed;
     [Min(1)] public int enemyPowerLevel;
     [Min(0)] public float baseAttackDamage;
+    [Min(0)] public float sanityDamage;
 
 }

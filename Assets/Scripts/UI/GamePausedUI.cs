@@ -18,8 +18,6 @@ public class GamePausedUI : MonoBehaviour {
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
 
-        SetupButtonListeners();
-
         Hide();
     }
 
@@ -45,10 +43,12 @@ public class GamePausedUI : MonoBehaviour {
     }
 
     private void Hide() {
+        ResetListeners();
         gameObject.SetActive(false);
     }
 
     private void Show() {
+        SetupButtonListeners();
         gameObject.SetActive(true);
     }
 
@@ -62,6 +62,7 @@ public class GamePausedUI : MonoBehaviour {
     }
 
     private void SetupButtonListeners() {
+        Debug.Log("Setting listeners");
         settings.onClick.AddListener(() => {
             // settings button clicked
             settingsUI.ToggleVisibility();
@@ -86,6 +87,11 @@ public class GamePausedUI : MonoBehaviour {
             });
             alertUI.Show();
         });
+    }
+
+    private void ResetListeners() {
+        settings.onClick.RemoveAllListeners();
+        quitGame.onClick.RemoveAllListeners();
     }
 
     private void OnDestroy() {
