@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,6 +20,8 @@ public class MapGenerator : MonoBehaviour {
 
     [Header("Map Configs")]
     [SerializeField] private Transform map;
+    [SerializeField] private Transform mapParent;
+    [SerializeField] private Transform[] mapPrefabs;
     [SerializeField] private LayerMask terrainMask;
     private Vector2Int mapSize;
     private Vector3 mapOffset;
@@ -52,6 +56,7 @@ public class MapGenerator : MonoBehaviour {
     public void DrawTreeMap() {
         MeshRenderer mr = map.GetComponent<MeshRenderer>();
         mapSize = new Vector2Int((int)mr.bounds.size.x, (int)mr.bounds.size.z);
+        Debug.Log(mapSize);
         mapOffset = new Vector3(mapSize.x / 2f, 0f, mapSize.y / 2f);
         switch (generationMode) {
             case GenerationMode.TextureGeneration:
@@ -84,8 +89,8 @@ public class MapGenerator : MonoBehaviour {
 
     private void GeneateTrees() {
         Transform parent = new GameObject("Trees").transform;
-        for (int x = 0; x < mapSize.x; x++) {
-            for(int y = 0; y < mapSize.y; y++) {
+        for (int x = 0; x < mapSize.x - 20; x++) {
+            for(int y = 0; y < mapSize.y - 20; y++) {
 
                 float noiseValue = treeNoiseTexture.GetPixel(x, y).g;
 
@@ -100,8 +105,8 @@ public class MapGenerator : MonoBehaviour {
 
     private void GenerateDecorations() {
         Transform parent = new GameObject("Decorations").transform;
-        for(int x = 0; x < mapSize.x; x++) {
-            for(int y = 0; y < mapSize.y; y++) {
+        for(int x = 0; x < mapSize.x - 40; x++) {
+            for(int y = 0; y < mapSize.y - 40; y++) {
 
                 float noiseValue = decorNoiseTexture.GetPixel(x, y).g;
 
@@ -129,8 +134,8 @@ public class MapGenerator : MonoBehaviour {
             return;
         }
 
-        Transform prefab = prefabs[Random.Range(0, prefabs.Length)];
-        Quaternion prefabRotation = Quaternion.Euler(Vector3.up * Random.Range(0f, 360f));
+        Transform prefab = prefabs[UnityEngine.Random.Range(0, prefabs.Length)];
+        Quaternion prefabRotation = Quaternion.Euler(Vector3.up * UnityEngine.Random.Range(0f, 360f));
         Vector3 prefabSize = prefab.GetComponent<NavMeshModifierVolume>().size;
 
         if (Utils.CheckSpawnAvailability(spawnLocation, prefabRotation, prefabSize, mask)) {
@@ -146,6 +151,8 @@ public class MapGenerator : MonoBehaviour {
     }
 
     public Transform GetTerrain() {
+        if(map == null)
+            map = Instantiate(mapPrefabs[GameManager.Instance.GetCurrentDifficultyData().GetDifficultyLevel()], Vector3.zero, Quaternion.identity, mapParent);
         return map;
     }
 

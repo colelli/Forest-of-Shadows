@@ -175,7 +175,7 @@ public struct GameDifficultyData {
     [SerializeField] [Min(1)] [Tooltip("Max power level based for enemy spawning cap")] private int difficultyMaxPwrLvl;
     [SerializeField] [Min(15)] [Tooltip("Timer interval for new enemy spawning")] private int enemySpawnInterval;
     [SerializeField] [Min(1)] [Tooltip("Time speed multiplier")] private int difficultyDayTimeMultiplier;
-    [SerializeField][Min(0.5f)][Tooltip("Difficulty multiplier used for enemy damage and more")] private float difficultyMultiplier;
+    [SerializeField] [Min(0.5f)][Tooltip("Difficulty multiplier used for enemy damage and more")] private float difficultyMultiplier;
     [SerializeField] [Min(1)] [Tooltip("Amout of sanity to drain every 'Sanity Debuff Interval' seconds")] private int sanityDebuff;
     [SerializeField] [Tooltip("Time interval to apply sanity debuff")] private float sanityDebuffInterval;
 
