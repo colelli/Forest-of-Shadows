@@ -25,7 +25,7 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField] private LayerMask terrainMask;
     private Vector2Int mapSize;
     private Vector3 mapOffset;
-    [SerializeField] private int seed;
+    private int seed;
     [SerializeField] private bool autoUpdate;
 
     [Header("Tree Configs")]
@@ -72,6 +72,7 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private void GenerateTextures() {
+        seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
         //Generate Tree Noise Texture
         treeNoiseTexture = NoiseGenerator.GenerateNoiseMap(mapSize, seed, treeNoiseScale);
 

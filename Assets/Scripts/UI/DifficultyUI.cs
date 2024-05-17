@@ -41,6 +41,7 @@ public class DifficultyUI : MonoBehaviour, IMenuUI {
     private void TryLoadSavedGameData() {
         if (SaveManager.TryReadSavedData<GameSaveData>(_GAMESAVE_FILENAME, out GameSaveData gameData)) {
             _currentGameData = gameData;
+            _currentGameData.level = 1;
         } else {
             _currentGameData = _defaultNewGameData;
         }
