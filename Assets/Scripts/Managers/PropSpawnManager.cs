@@ -34,7 +34,8 @@ public class PropSpawnManager : MonoBehaviour {
         SetupPowerUps();
 
         MeshRenderer mr = MapGenerator.Instance.GetTerrain().GetComponent<MeshRenderer>();
-        mapSize = new Vector2(mr.bounds.size.x, mr.bounds.size.z);
+        int offset = GameManager.Instance.GetCurrentDifficultyData().GetDifficultyLevel() == 3 ? 80 : 40;
+        mapSize = new Vector2(mr.bounds.size.x - offset, mr.bounds.size.z - offset);
         mapOffset = new Vector3(mapSize.x / 2f, 0f, mapSize.y / 2f);
         // Spawn items to deliver
         SpawnPropInRandomLocation(DeliveryManager.Instance.GetDeliverablesList(), new GameObject("PropParent").transform);
@@ -53,7 +54,7 @@ public class PropSpawnManager : MonoBehaviour {
     private void CalculatePowerUpCount() {
         int powerUpBaseCount = 6;
         GameDifficultyData difficulty = GameManager.Instance.GetCurrentDifficultyData();
-        powerUpCount = (int)Mathf.Floor((powerUpBaseCount / difficulty.GetDifficultyLevel()) - 1);
+        powerUpCount = (int)Mathf.Floor((powerUpBaseCount / (difficulty.GetDifficultyLevel() + 1)) - 1);
     }
 
     private void PopulatePowerUpDictionary() {

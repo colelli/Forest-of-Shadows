@@ -35,8 +35,17 @@ public class DeliveryManager : MonoBehaviour {
     }
 
     private void CalculatePropCountToDeliver() {
-        //TO-DO write calculate method based on current day
-        propCountToDeliver = 3;
+        int deliverAmount = GameManager.Instance.GetCurrentDifficultyData().GetObjToDeliver();
+        int maxDeliverAmount = GameManager.Instance.GetCurrentDifficultyData().GetMaxObjToDeliver();
+        int currentLevel = 1;
+        if(SaveManager.TryReadSavedData<GameSaveData>("game_data", out GameSaveData gameData)){
+            currentLevel = gameData.level;
+        }
+        float multiplier = GameManager.Instance.GetCurrentDifficultyData().GetLevelObjToDeliverMultiplier();
+
+        // calculate correct total based on current level & difficulty
+        propCountToDeliver = deliverAmount;
+        propCountToDeliver += Mathf.Clamp(Mathf.RoundToInt(deliverAmount * (currentLevel - 1) * multiplier) - deliverAmount, 0, maxDeliverAmount);
     }
 
     private void PopulateDeliverablesList() {

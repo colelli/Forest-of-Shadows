@@ -15,7 +15,7 @@ public class PlayerSpawnManager : MonoBehaviour {
     private void Start() {
         // Get references
         MeshRenderer mr = MapGenerator.Instance.GetTerrain().GetComponent<MeshRenderer>();
-        mapSize = new Vector2(mr.bounds.size.x - 40, mr.bounds.size.z - 40);
+        mapSize = new Vector2(mr.bounds.size.x - 80, mr.bounds.size.z - 80);
         mapOffset = new Vector3(mapSize.x / 2f, 0f, mapSize.y / 2f);
 
         // Place the spawn structure randomly

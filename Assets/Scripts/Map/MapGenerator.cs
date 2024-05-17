@@ -55,7 +55,8 @@ public class MapGenerator : MonoBehaviour {
 
     public void DrawTreeMap() {
         MeshRenderer mr = map.GetComponent<MeshRenderer>();
-        mapSize = new Vector2Int((int)mr.bounds.size.x, (int)mr.bounds.size.z);
+        int offset = 20 * (GameManager.Instance.GetCurrentDifficultyData().GetDifficultyLevel() + 1);
+        mapSize = new Vector2Int((int)mr.bounds.size.x - offset, (int)mr.bounds.size.z - offset);
         Debug.Log(mapSize);
         mapOffset = new Vector3(mapSize.x / 2f, 0f, mapSize.y / 2f);
         switch (generationMode) {
@@ -89,8 +90,8 @@ public class MapGenerator : MonoBehaviour {
 
     private void GeneateTrees() {
         Transform parent = new GameObject("Trees").transform;
-        for (int x = 0; x < mapSize.x - 20; x++) {
-            for(int y = 0; y < mapSize.y - 20; y++) {
+        for (int x = 0; x < mapSize.x; x++) {
+            for(int y = 0; y < mapSize.y; y++) {
 
                 float noiseValue = treeNoiseTexture.GetPixel(x, y).g;
 
@@ -105,8 +106,8 @@ public class MapGenerator : MonoBehaviour {
 
     private void GenerateDecorations() {
         Transform parent = new GameObject("Decorations").transform;
-        for(int x = 0; x < mapSize.x - 40; x++) {
-            for(int y = 0; y < mapSize.y - 40; y++) {
+        for(int x = 0; x < mapSize.x; x++) {
+            for(int y = 0; y < mapSize.y; y++) {
 
                 float noiseValue = decorNoiseTexture.GetPixel(x, y).g;
 

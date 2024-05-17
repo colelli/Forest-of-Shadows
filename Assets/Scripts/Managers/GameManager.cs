@@ -172,10 +172,17 @@ public struct GameDifficultyData {
     }
 
     [SerializeField] private GameDifficultyLevel difficultyLevel;
+    [Header("Objectives")]
+    [SerializeField] [Tooltip("Number of objectives to deliver")] private int objToDeliver;
+    [SerializeField] [Tooltip("Max number of deliverable objectives")] private int maxObjToDeliver;
+    [SerializeField] [Range(1f, 2f)] [Tooltip("Per-level objectives multiplier")] private float levelObjToDeliverMultiplier;
+    [Header("Enemies")]
     [SerializeField] [Min(1)] [Tooltip("Max power level based for enemy spawning cap")] private int difficultyMaxPwrLvl;
     [SerializeField] [Min(15)] [Tooltip("Timer interval for new enemy spawning")] private int enemySpawnInterval;
+    [Header("Day Time")]
     [SerializeField] [Min(1)] [Tooltip("Time speed multiplier")] private int difficultyDayTimeMultiplier;
     [SerializeField] [Min(0.5f)][Tooltip("Difficulty multiplier used for enemy damage and more")] private float difficultyMultiplier;
+    [Header("Stats")]
     [SerializeField] [Min(1)] [Tooltip("Amout of sanity to drain every 'Sanity Debuff Interval' seconds")] private int sanityDebuff;
     [SerializeField] [Tooltip("Time interval to apply sanity debuff")] private float sanityDebuffInterval;
 
@@ -205,6 +212,18 @@ public struct GameDifficultyData {
 
     public float GetSanityDebuffInterval() {
         return sanityDebuffInterval;
+    }
+
+    public int GetObjToDeliver() {
+        return objToDeliver;
+    }
+
+    public int GetMaxObjToDeliver() {
+        return maxObjToDeliver;
+    }
+
+    public float GetLevelObjToDeliverMultiplier() {
+        return levelObjToDeliverMultiplier;
     }
 
 }
