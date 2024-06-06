@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -8,13 +9,27 @@ using UnityEngine.UI;
 
 public class PlayerStatUI : MonoBehaviour {
 
+    public static PlayerStatUI Instance {get; private set;}
+
     public event EventHandler OnHideStamina;
     public event EventHandler OnShowStamina;
 
     [SerializeField] private Image healthBar;
     [SerializeField] private Image staminaBar;
+    [SerializeField] private GameObject interactionHintUI;
     private float staminaEffectMin = 0.1f;
     private float staminaEffectMax = 0.9f;
+
+    private void Awake() {
+        //We check if there is already a Singleton of AudioManager
+        if (Instance != null && Instance != this) {
+            Destroy(this);
+            throw new System.Exception($"[{this.name}] >>> An Instance of this Singleton already exists!");
+        } else {
+            //There are not instances
+            Instance = this;
+        }
+    }
 
     private void Start() {
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
@@ -73,6 +88,14 @@ public class PlayerStatUI : MonoBehaviour {
     private void OnDestroy() {
         GameManager.Instance.OnGamePaused -= GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused -= GameManager_OnGameUnpaused;
+    }
+
+    public void ShowInteractionHintUI() {
+        interactionHintUI.SetActive(true);
+    }
+
+    public void HideInteractionHintUI() {
+        interactionHintUI.SetActive(false);
     }
 
 }

@@ -61,6 +61,7 @@ public class Player : MonoBehaviour {
             //We are next to a prop that we can pick up
             if (interactTarget.Interact()) {
                 interactTarget = null;
+                PlayerStatUI.Instance.HideInteractionHintUI();
             }
         }
 
@@ -195,6 +196,7 @@ public class Player : MonoBehaviour {
         if(other.TryGetComponent<IInteractable>(out IInteractable prop)) {
             Debug.Log($"[{this.name}] >>> Entered {prop} interaction range");
             interactTarget = prop;
+            PlayerStatUI.Instance.ShowInteractionHintUI();
         }
     }
 
@@ -203,6 +205,7 @@ public class Player : MonoBehaviour {
             if(interactTarget == prop) {
                 Debug.Log($"[{this.name}] >>> Exited {prop} interaction range");
                 interactTarget = null;
+                PlayerStatUI.Instance.HideInteractionHintUI();
             }
         }
     }
