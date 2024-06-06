@@ -47,9 +47,10 @@ public class SettingsUI : MonoBehaviour, IMenuUI {
         vignetteToggle.isOn = _savedSettings.vignittePP;
     }
 
-    public void ToggleVisibility() {
+    public bool ToggleVisibility() {
         _isVisible = !_isVisible;
         if(_isVisible) { Show(); } else { Hide(); }
+        return _isVisible;
     }
 
     public void Show() {

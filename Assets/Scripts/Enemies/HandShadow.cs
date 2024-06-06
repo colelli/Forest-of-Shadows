@@ -18,6 +18,7 @@ public class HandShadow : Enemy {
         Vector3 moveAmount = velocity * Time.deltaTime;
 
         transform.position += new Vector3(moveAmount.x, 0, moveAmount.z);
+        transform.LookAt(target.position);
     }
 
     private void RetreatFromLightSource() {

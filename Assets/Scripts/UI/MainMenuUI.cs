@@ -17,6 +17,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private SettingsUI settingsPanel;
     [SerializeField] private DifficultyUI difficultyPanel;
     [SerializeField] private GameObject loadingPlaceholder;
+    [SerializeField] private GameObject title;
 
     private IMenuUI currentShownSideMenuPanel;
 
@@ -40,6 +41,7 @@ public class MainMenuUI : MonoBehaviour {
                 //Side panel showing -> Hide it and reset ref
 
                 currentShownSideMenuPanel.Hide();
+                ShowTitle();
                 currentShownSideMenuPanel = null;
             }
         }
@@ -49,8 +51,15 @@ public class MainMenuUI : MonoBehaviour {
     private void SetupButtonListeners() {
         newGameButton.onClick.AddListener(() => {
             // newGame button clicked
-            difficultyPanel.ToggleVisibility();
-            currentShownSideMenuPanel = difficultyPanel;
+            if (difficultyPanel.ToggleVisibility()) {
+                //shown
+                currentShownSideMenuPanel = difficultyPanel;
+                ToggleTitle();
+            } else {
+                //hidden
+                currentShownSideMenuPanel = null;
+                ShowTitle();
+            }
         });
 
         loadGameButton.onClick.AddListener(() => {
@@ -59,13 +68,21 @@ public class MainMenuUI : MonoBehaviour {
 
         settingsButton.onClick.AddListener(() => {
             // settings button clicked
-            settingsPanel.ToggleVisibility();
-            currentShownSideMenuPanel = settingsPanel;
+            if (settingsPanel.ToggleVisibility()) {
+                //shown
+                currentShownSideMenuPanel = settingsPanel;
+                ToggleTitle();
+            } else {
+                //hidden
+                currentShownSideMenuPanel = null;
+                ShowTitle();
+            }
         });
 
         quitButton.onClick.AddListener(() => {
             // quitGame button clicked
             currentShownSideMenuPanel = alertUI;
+            ToggleTitle();
             alertUI.SetDisplayInfo("Are you sure you want to quit?");
             alertUI.SetCancelButtonEvent(() => {
                 alertUI.Hide();
@@ -84,6 +101,14 @@ public class MainMenuUI : MonoBehaviour {
 
     public void ShowLoadingPlaceholder() {
         loadingPlaceholder.SetActive(true);
+    }
+
+    private void ShowTitle() {
+        title.SetActive(true);
+    }
+
+    private void ToggleTitle() {
+        title.SetActive(!title.activeSelf);
     }
 
 }

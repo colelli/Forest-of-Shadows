@@ -32,9 +32,10 @@ public class AlertUI : MonoBehaviour, IMenuUI {
         });
     }
 
-    public void ToggleVisibility() {
+    public bool ToggleVisibility() {
         _isVisible = !_isVisible;
         if (_isVisible) { Show(); } else { Hide(); } 
+        return _isVisible;
     }
 
     public void Show() {
