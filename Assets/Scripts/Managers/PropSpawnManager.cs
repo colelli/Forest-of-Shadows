@@ -34,7 +34,7 @@ public class PropSpawnManager : MonoBehaviour {
         SetupPowerUps();
 
         MeshRenderer mr = MapGenerator.Instance.GetTerrain().GetComponent<MeshRenderer>();
-        int offset = GameManager.Instance.GetCurrentDifficultyData().GetDifficultyLevel() == 3 ? 80 : 40;
+        int offset = GameManager.Instance.GetCurrentDifficultyData().GetDifficultyLevel() == 3 ? 80 : 60;
         mapSize = new Vector2(mr.bounds.size.x - offset, mr.bounds.size.z - offset);
         mapOffset = new Vector3(mapSize.x / 2f, 0f, mapSize.y / 2f);
         // Spawn items to deliver

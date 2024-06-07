@@ -14,7 +14,7 @@ public class MagicalCane : MonoBehaviour {
     [SerializeField] private float baseAttackDamage = 10f;
     [Header("Light & Visuals")]
     [SerializeField] private bool isLightOn;
-    [SerializeField] private Light lightSource;
+    [SerializeField] private Transform lightSources;
     [SerializeField] private Transform lightVisual;
     private float attackDamage;
 
@@ -60,7 +60,10 @@ public class MagicalCane : MonoBehaviour {
 
     private void UpdateLightStatus() {
         lightSourceCollider.enabled = isLightOn;
-        lightSource.enabled = isLightOn;
+        foreach(Transform lightTransform in lightSources) {
+            Light light = lightTransform.GetComponent<Light>();
+            light.enabled = isLightOn;
+        }
         lightVisual.gameObject.SetActive(isLightOn);
     }
 
