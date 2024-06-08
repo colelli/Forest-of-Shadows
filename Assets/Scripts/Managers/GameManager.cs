@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
     public event EventHandler OnGamePaused;
     public event EventHandler OnGameUnpaused;
+    public event EventHandler OnGameOver;
 
     public enum GameState {
         WaitingToStart,
@@ -143,6 +144,13 @@ public class GameManager : MonoBehaviour {
 
     public void SetPlayerOnSpawn(Player player) {
         this.player = player;
+        this.player.OnPlayerDeath += Player_OnPlayerDeath;
+    }
+
+    private void Player_OnPlayerDeath(object sender, EventArgs e) {
+        Cursor.visible = true;
+        Time.timeScale = 0f;
+        OnGameOver?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetDifficulty(int difficultyIndex) {
@@ -157,6 +165,8 @@ public class GameManager : MonoBehaviour {
 
     private void OnDestroy() {
         StarterAssetsInputs.OnEscapePressed -= StarterAssetsInputs_OnEscapePressed;
+        if(player != null)
+            this.player.OnPlayerDeath -= Player_OnPlayerDeath;
     }
 
 }

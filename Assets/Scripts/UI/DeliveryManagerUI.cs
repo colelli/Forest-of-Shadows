@@ -14,6 +14,7 @@ public class DeliveryManagerUI : MonoBehaviour {
     private void Start() {
         GameManager.Instance.OnGamePaused += GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused += GameManager_OnGameUnpaused;
+        GameManager.Instance.OnGameOver += GameManager_OnGameOver;
 
         DeliveryManager.Instance.OnPropsListGenerated += DeliveryManager_OnPropsListGenerated;
         DeliveryManager.Instance.OnPropsDelivered += DeliveryManager_OnPropsDelivered;
@@ -21,12 +22,24 @@ public class DeliveryManagerUI : MonoBehaviour {
         UpdateVisuals();
     }
 
-    private void GameManager_OnGamePaused(object sender, System.EventArgs e) {
+    private void Hide() {
         gameObject.SetActive(false);
     }
 
-    private void GameManager_OnGameUnpaused(object sender, System.EventArgs e) {
+    private void Show() {
         gameObject.SetActive(true);
+    }
+
+    private void GameManager_OnGameOver(object sender, System.EventArgs e) {
+        Hide();
+    }
+
+    private void GameManager_OnGamePaused(object sender, System.EventArgs e) {
+        Hide();
+    }
+
+    private void GameManager_OnGameUnpaused(object sender, System.EventArgs e) {
+        Show();
     }
 
     private void DeliveryManager_OnPropsDelivered(object sender, System.EventArgs e) {
@@ -60,6 +73,7 @@ public class DeliveryManagerUI : MonoBehaviour {
 
         GameManager.Instance.OnGamePaused -= GameManager_OnGamePaused;
         GameManager.Instance.OnGameUnpaused -= GameManager_OnGameUnpaused;
+        GameManager.Instance.OnGameOver -= GameManager_OnGameOver;
     }
 
 }

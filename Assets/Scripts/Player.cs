@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    public event EventHandler OnPlayerDeath;
+
     private StarterAssetsInputs inputs;
     private MagicalCane magicalCane;
     private Coroutine lightTimerCoroutine;
@@ -179,6 +181,7 @@ public class Player : MonoBehaviour {
     private void Death() {
         if(currentHealth <= 0) {
             Debug.Log("Game Over");
+            OnPlayerDeath?.Invoke(this, EventArgs.Empty);
         }
     }
 

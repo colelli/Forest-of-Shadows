@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class LobbyMananger : MonoBehaviour {
 
@@ -43,6 +44,10 @@ public class LobbyMananger : MonoBehaviour {
     public static void EnterLobbyAndSaveGame(int score) {
         // Save new progress
         SaveManager.SaveData<GameSaveData>(new GameSaveData(_currentSave.difficulty, _currentSave.level + 1, _currentSave.score + score), _DEFAULT_SAVED_GAME_FILENAME);
+        LoadingManager.Load(LoadingManager.Scene.LobbyScene);
+    }
+
+    public static void EnterLobbyAfterGameOver() {
         LoadingManager.Load(LoadingManager.Scene.LobbyScene);
     }
 
