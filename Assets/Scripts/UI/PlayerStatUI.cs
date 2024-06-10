@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.DualShock;
+using UnityEngine.InputSystem.XInput;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
@@ -17,6 +20,7 @@ public class PlayerStatUI : MonoBehaviour {
     [SerializeField] private Image healthBar;
     [SerializeField] private Image staminaBar;
     [SerializeField] private GameObject interactionHintUI;
+    [SerializeField] private TextMeshProUGUI interactionText;
     private float staminaEffectMin = 0.1f;
     private float staminaEffectMax = 0.9f;
 
@@ -91,6 +95,24 @@ public class PlayerStatUI : MonoBehaviour {
     }
 
     public void ShowInteractionHintUI() {
+        var gamepad = Gamepad.current;
+        switch (gamepad) {
+            case null:
+                //player plays with keyboard
+                interactionText.color = Color.black;
+                interactionText.SetText("E");
+                break;
+            case DualShockGamepad:
+                //we have a ps controller connected
+                interactionText.color = Color.red;
+                interactionText.SetText("O");
+                break;
+            case XInputController:
+                //we have an xbox controller connected
+                interactionText.color = Color.red;
+                interactionText.SetText("B");
+                break;
+        }
         interactionHintUI.SetActive(true);
     }
 

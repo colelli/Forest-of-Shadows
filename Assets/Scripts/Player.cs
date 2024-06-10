@@ -83,6 +83,7 @@ public class Player : MonoBehaviour {
             if (coroutineRunning) {
                 Debug.Log("Coroutine stopped!");
                 StopCoroutine(lightTimerCoroutine);
+                PlayerStatUI.Instance.HideInteractionHintUI();
                 coroutineRunning = false;
             }
             lightTimerCoroutine = StartCoroutine(TimerCoroutine(resetInteractionTimer, ResetNumbersOfInteractions));
@@ -175,6 +176,7 @@ public class Player : MonoBehaviour {
     }
 
     private void BlowTorch() {
+        PlayerStatUI.Instance.ShowInteractionHintUI();
         magicalCane.ToggleLight();
     }
 

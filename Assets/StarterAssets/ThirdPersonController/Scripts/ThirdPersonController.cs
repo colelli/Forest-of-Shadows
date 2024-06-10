@@ -20,7 +20,7 @@ namespace StarterAssets
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
-        private float _sprintStaminaCost = 20f;
+        private float _sprintStaminaCost = 7f;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
