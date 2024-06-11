@@ -65,7 +65,9 @@ public class PropSpawnManager : MonoBehaviour {
 
     private void SpawnPropInRandomLocation(Dictionary<PropSO, int> entries, Transform parent) {
         foreach(KeyValuePair<PropSO, int> entry in entries) {
-            for(int i=0; i<entry.Value; i++) {
+            int extraValue = Mathf.CeilToInt(entry.Value / 2);
+            extraValue = Mathf.Clamp(extraValue, 1, extraValue);
+            for (int i=0; i<entry.Value + extraValue; i++) {
                 bool propSpawned = false;
                 do {
                     propSpawned = InstantiateProp(Utils.GetRandomLocation(mapSize, mapOffset), entry.Key.propPrefab, mask, parent);

@@ -21,7 +21,7 @@ public class PropTemplateUI : MonoBehaviour {
         }
         SetProgressText(currentCount, entry.Value);
 
-        if (currentCount == entry.Value) {
+        if (currentCount >= entry.Value) {
             isDone = true;
         }
         ShowDoneUI(isDone);
