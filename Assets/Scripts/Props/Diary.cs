@@ -44,12 +44,16 @@ public class Diary : MonoBehaviour, IInteractable {
         _bookUI.SetActive(true);
         SetBusy(true);
         OnGamePausedUI?.Invoke(this, EventArgs.Empty);
+        PlayerStatUI.Instance.HideInteractionHintUI();
+        Time.timeScale = 0f;
     }
 
     private void Hide() {
         OnGameUnpausedUI?.Invoke(this, EventArgs.Empty);
         SetBusy(false);
         _bookUI.SetActive(false);
+        PlayerStatUI.Instance.ShowInteractionHintUI();
+        Time.timeScale = 1f;
     }
 
 }
